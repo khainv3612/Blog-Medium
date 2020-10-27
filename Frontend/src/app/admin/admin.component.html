@@ -1,0 +1,30 @@
+<div class="content">
+  <div class="container">
+    <div *ngFor="let post of postsPending">
+      <div class="blogpost">
+        <h3><a (click)="viewPost(post)" class="blog-title">{{post.title}}</a></h3>
+        <hr>
+        <div>
+         <span class="meta-footer-thumb">
+								<a href="/"><img class="author-thumb"
+                                 src="https://www.gravatar.com/avatar/e56154546cf4be74e393c62d1ae9f9d4?s=250&amp;d=mm&amp;r=x"
+                                 alt="Sal"></a>
+								</span>
+          <p>{{post.userCreate}}</p>
+        </div>
+<!--        <section class="featured-posts">-->
+<!--        <div style="padding-top: 50px">-->
+<!--          <p [innerHTML]="post.content"></p>-->
+<!--        </div>-->
+<!--        </section>-->
+        <div>
+          <a type="button" (click)="viewPost(post)" class="read-more btn btn-default">Read More</a></div>
+        <hr>
+        <button type="button" class="btn btn-primary btn-sm" (click)="publishPost(post.idPending)">Acept</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="deletePost(post.idPending)">Delete</button>
+        <hr>
+      </div>
+<!--      <hr>-->
+    </div>
+  </div>
+</div>

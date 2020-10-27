@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #fff;
+  color: #555;
+  font-family: 'Lato', 'Arial', sans-serif,'Merriweather';
+  font-weight: 400;
+  /*font-size: 20px;*/
+  text-rendering: optimizeLegibility;
+}
+
+.text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  visibility: visible;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: horizontal;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif,'Merriweather'; }
