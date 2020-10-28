@@ -27,14 +27,14 @@ import {EditorModule} from '@tinymce/tinymce-angular';
 import {AdminComponent} from './admin/admin.component';
 // import 'angular2-navigate-with-data';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { ContactBarComponent } from './contact-bar/contact-bar.component';
-import { createPopper } from '@popperjs/core';
-import { NavAdminComponent } from './nav/nav-admin/nav-admin.component';
-import { NavUserComponent } from './nav/nav-user/nav-user.component';
-import { NavAnonymousComponent } from './nav/nav-anonymous/nav-anonymous.component';
-import { MyPostComponent } from './personal/my-post/my-post.component';
+import {ContactBarComponent} from './contact-bar/contact-bar.component';
+import {createPopper} from '@popperjs/core';
+import {NavAdminComponent} from './nav/nav-admin/nav-admin.component';
+import {NavUserComponent} from './nav/nav-user/nav-user.component';
+import {NavAnonymousComponent} from './nav/nav-anonymous/nav-anonymous.component';
+import {MyPostComponent} from './personal/my-post/my-post.component';
 
 
 @NgModule({
@@ -52,7 +52,7 @@ import { MyPostComponent } from './personal/my-post/my-post.component';
     NavAdminComponent,
     NavUserComponent,
     NavAnonymousComponent,
-    MyPostComponent
+    MyPostComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,8 +69,8 @@ import { MyPostComponent } from './personal/my-post/my-post.component';
       {path: 'login', component: LoginComponent},
       {path: 'register-success', component: RegisterSuccessComponent},
       {path: 'home', component: HomeComponent},
-      {path: 'admin/add-post', component: AddPostComponent, canActivate: [AuthGuard]},
-      {path: 'mypost', component: MyPostComponent, canActivate: [AuthGuard]}
+      {path: 'admin/:action', component: AddPostComponent, canActivate: [AuthGuard]},
+      {path: 'mypost/:type-post', component: MyPostComponent, canActivate: [AuthGuard]},
     ]),
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),

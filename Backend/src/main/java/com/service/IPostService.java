@@ -3,10 +3,12 @@ package com.service;
 import com.dto.PostDto;
 import com.dto.PostPendingDTO;
 import com.model.Post;
+import com.model.Status;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.util.List;
 
@@ -17,14 +19,15 @@ public interface IPostService {
     Post findById(Long id);
 
     boolean createPost(PostDto postDto) throws IOException;
+    boolean updatePost(PostDto postDto) throws IOException;
 
     PostDto readSinglePost(Long id);
 
     PostDto mapFromPostToDto(Post post);
 
-    Post mapFromDtoToPost(PostDto postDto);
+    Post mapFromDtoToPost(PostDto postDto, Status typePost);
 
-    void writeBlogPending(Post post) throws IOException;
+    void writeBlog(Post post,String typePost) throws IOException;
 
     String readBlogContent(String urlPost);
 
@@ -38,7 +41,10 @@ public interface IPostService {
 
     boolean deletePost(Long id);
 
-    boolean movieFilePublish(String nameFile) throws IOException;
+    boolean movieFilePublish(String nameFile, Long id) throws IOException;
 
-    List<Post> getMyPost();
+    List<PostDto> getMyPostPublished();
+    List<PostDto> getAllMyPostPending();
+
+    Status getStatusById(Long id);
 }

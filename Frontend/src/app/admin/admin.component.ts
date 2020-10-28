@@ -38,7 +38,7 @@ export class AdminComponent implements OnInit {
     this.router.navigateByUrl('/post', {state: postView});
   }
 
-  publishPost(id: string) {
+  publishPost(id: number) {
     this.postService.publishPost(id).subscribe(data => {
       alert('done');
       this.router.navigateByUrl('/');
@@ -47,13 +47,13 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  deletePost(id: string) {
+  deletePost(id: number) {
     if (!confirm('Are you sure?')) {
       return;
     }
     this.postService.deletePost(id).subscribe(result => {
       alert('done');
-      this.router.navigateByUrl('/');
+      document.getElementById('post-' + id.toString()).hidden = true;
     }, error => {
       alert('failed');
     });

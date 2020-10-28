@@ -60,13 +60,28 @@ public class PostServiceImpl implements IPostService {
     public boolean createPost(PostDto postDto) throws IOException {
         if (!postDto.getImage().startsWith("https://firebasestorage.googleapis.com/"))
             return false;
-        Post post = mapFromDtoToPost(postDto);
+        Post post = mapFromDtoToPost(postDto, sttPending);
         if (postRepository.getNextId() != null) {
             post.setId(getNextIdPost() + 1L);
         } else {
             post.setId(1L);
         }
-        writeBlogPending(post);
+        writeBlog(post, environment.getProperty("URL_POST_PENDING"));
+        postRepository.save(post);
+        return true;
+    }
+
+    @Override
+    public boolean updatePost(PostDto postDto) throws IOException {
+        if (!postDto.getImage().startsWith("https://firebasestorage.googleapis.com/"))
+            return false;
+        Status status = getStatusById(postDto.getId());
+        Post post = mapFromDtoToPost(postDto, status);
+        if (status.getIdStatus().equals(sttPending.getIdStatus())){
+            writeBlog(post, environment.getProperty("URL_POST_PENDING"));
+        } else if (status.getIdStatus().equals(sttPublished.getIdStatus())){
+            writeBlog(post, environment.getProperty("URL_POST_PUBLISHED"));
+        }
         postRepository.save(post);
         return true;
     }
@@ -90,20 +105,21 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public Post mapFromDtoToPost(PostDto postDto) {
+    public Post mapFromDtoToPost(PostDto postDto, Status typePost) {
         Post post = new Post();
+        if (postDto.getId() != null)
+            post.setId(postDto.getId());
         post.setTitle(postDto.getTitle());
         post.setImage(postDto.getImage());
         post.setContent(postDto.getContent());
-        User loggedInUser = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         post.setLastUpdate(Instant.now());
-        post.setUserCreate(accountServiceImpl.findByUsername(loggedInUser.getUsername()));
-        post.setStatus(sttPending);
+        post.setUserCreate(accountServiceImpl.findByUsername(getCurrentUser().getUsername()));
+        post.setStatus(typePost);
         return post;
     }
 
     @Override
-    public void writeBlogPending(Post post) throws IOException {
+    public void writeBlog(Post post, String typePost) throws IOException {
         FileWriter writer = null;
         BufferedWriter buffer = null;
         Date myDate = Date.from(post.getLastUpdate());
@@ -111,8 +127,7 @@ public class PostServiceImpl implements IPostService {
         String formattedDate = formatter.format(myDate);
         String fileName = "id-" + post.getId() + "_" +
                 post.getUserCreate().getUserName().replaceAll("\\s", "-") + "_" + formattedDate + ".txt";
-        String postUrl = environment.getProperty("URL_POST_PENDING")
-                + fileName;
+        String postUrl = typePost + fileName;
         try {
             writer = new FileWriter(postUrl);
             buffer = new BufferedWriter(writer);
@@ -123,7 +138,7 @@ public class PostServiceImpl implements IPostService {
         } finally {
             buffer.close();
         }
-        post.setContent(fileName);
+        post.setContent(postUrl);
         System.out.println("Success... write " + fileName);
     }
 
@@ -131,7 +146,7 @@ public class PostServiceImpl implements IPostService {
     public String readBlogContent(String urlPost) {
         StringBuilder content = new StringBuilder();
         try {
-            FileReader fr = new FileReader(environment.getProperty("URL_POST_PENDING") + urlPost);
+            FileReader fr = new FileReader(urlPost);
             BufferedReader read = new BufferedReader(fr);
             String i;
             while ((i = read.readLine()) != null)
@@ -184,7 +199,7 @@ public class PostServiceImpl implements IPostService {
         Query query = entityManager.createNamedQuery("Post.publishPost");
         query.setParameter("id", id);
         int result = query.executeUpdate();
-        if (!movieFilePublish(findById(id).getContent()))
+        if (!movieFilePublish(findById(id).getContent(), id))
             result = 0;
         return result;
     }
@@ -195,7 +210,7 @@ public class PostServiceImpl implements IPostService {
         try {
             Query query = entityManager.createNamedQuery("Post.getUrlContentById");
             String content = query.setParameter("id", id).getResultList().get(0).toString();
-            File file = new File(environment.getProperty("URL_POST_PENDING") + content);
+            File file = new File(content);
             postRepository.deleteById(id);
             file.delete();
         } catch (Exception ex) {
@@ -206,23 +221,50 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public boolean movieFilePublish(String nameFile) {
+    public boolean movieFilePublish(String nameFile, Long id) {
+        String newUrl = "";
         try {
-            File post = new File(environment.getProperty("URL_POST_PENDING") + nameFile);
-            if (!post.renameTo(new File(environment.getProperty("URL_POST_PUBLISHED") + nameFile))) {
+            File postFile = new File(nameFile);
+            newUrl = environment.getProperty("URL_POST_PUBLISHED")
+                    + nameFile.substring(31);
+            if (!postFile.renameTo(new File(newUrl))) {
                 return false;
             }
+            Post post = findById(id);
+            post.setContent(newUrl);
+            postRepository.save(post);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
         return true;
     }
 
     @Override
-    public List<Post> getMyPost() {
-        User loggedInUser = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+    public List<PostDto> getMyPostPublished() {
         List<Post> list =
-                postRepository.getAllByAccountCreate_Id(accountServiceImpl.findByUsername(loggedInUser.getUsername()).getId());
-        return list;
+                postRepository.getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(accountServiceImpl.findByUsername(getCurrentUser().getUsername()).getId(), sttPublished);
+        return list.stream().map(this::mapFromPostToDto).collect(toList());
+    }
+
+    @Override
+    public List<PostDto> getAllMyPostPending() {
+        List<Post> list =
+                postRepository.getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(accountServiceImpl.findByUsername(getCurrentUser().getUsername()).getId(), sttPending);
+        return list.stream().map(this::mapFromPostToDto).collect(toList());
+    }
+
+    @Override
+    @Transactional
+    public Status getStatusById(Long id) {
+        Query query = entityManager.createNamedQuery("Post.getStatusById");
+        query.setParameter("id", id);
+        Status status = (Status) query.getResultList().get(0);
+        return status;
+    }
+
+    public User getCurrentUser() {
+        User loggedInUser = authService.getCurrentUser().orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        return loggedInUser;
     }
 }

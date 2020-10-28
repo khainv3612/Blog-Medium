@@ -18,7 +18,6 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.post = history.state;
-    console.log(this.post);
     if (this.post.title != null) {
       localStorage.setItem('post-detail', JSON.stringify(this.post));
     } else {

@@ -2,12 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {PostPayload} from './post-payload';
 import {AddPostService} from '../add-post.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {delay, finalize} from 'rxjs/operators';
-import * as $ from 'jquery';
-import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-add-post',
@@ -15,6 +13,8 @@ import * as firebase from 'firebase';
   styleUrls: ['./add-post.component.css']
 })
 export class AddPostComponent implements OnInit {
+  postEdit: PostPayload;
+  action = '';
   urlImageSave = environment.URL_SAVE_IMAGE_BLOG_FIREBASE;
   isSaving = false;
   addPostForm: FormGroup;
@@ -65,7 +65,9 @@ export class AddPostComponent implements OnInit {
   };
 
 
-  constructor(private addpostService: AddPostService, private storage: AngularFireStorage, private router: Router) {
+  constructor(private addpostService: AddPostService, private storage: AngularFireStorage,
+              private router: Router, private routerActive: ActivatedRoute) {
+    this.router.getCurrentNavigation().extras.state;
     this.addPostForm = new FormGroup({
       title: this.title,
       body: this.body
@@ -81,21 +83,54 @@ export class AddPostComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.routerActive.params.subscribe(params => {
+      this.action = params['action'];
+    });
+    // tslint:disable-next-line:triple-equals
+    if (this.action == 'add-post') {
+      return;
+    }
+    this.postEdit = history.state;
+    if (this.postEdit.title != null) {
+      localStorage.setItem('post-edit', JSON.stringify(this.postEdit));
+    } else {
+      this.postEdit = JSON.parse(localStorage.getItem('post-edit'));
+    }
+    if (this.postEdit == null) {
+      return;
+    }
+    this.postPayload.id = this.postEdit.id;
+    this.title.setValue(this.postEdit.title);
+    this.checkImageNull = true;
+    this.imageUrl = this.postEdit.image.toString();
+    // @ts-ignore
+    this.addPostForm.get('body').value = this.postEdit.content;
   }
 
   async addPost() {
+    this.isSaving = true;
     this.postPayload.content = this.addPostForm.get('body').value;
     this.postPayload.title = this.addPostForm.get('title').value;
-    await this.uploadFileImage();
+    if (this.selectedImage != null) {
+      await this.uploadFileImage();
+    }
     this.postPayload.image = this.imageUrl;
     // this.imageUrl = '';
-    this.addpostService.addPost(this.postPayload).subscribe(data => {
-      this.router.navigateByUrl('/');
-    }, error => {
-      this.addPost();
-      console.log('Failure Response');
-    });
+    if (this.action == 'add-post') {
+      this.addpostService.addPost(this.postPayload).subscribe(data => {
+        this.router.navigateByUrl('/');
+      }, error => {
+        this.addPost();
+        console.log('Failure Response');
+      });
+    } else {
+      this.addpostService.updatePost(this.postPayload).subscribe(data => {
+        this.router.navigateByUrl('/');
+      }, error => {
+        this.addPost();
+        console.log('Failure Response');
+      });
+    }
   }
 
   showPreviewImage(event: any) {
@@ -113,7 +148,6 @@ export class AddPostComponent implements OnInit {
   }
 
   async uploadFileImage() {
-    this.isSaving = true;
     const date = new Date();
     let dateCreateStr = '';
     dateCreateStr += date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();

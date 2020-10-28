@@ -15,7 +15,9 @@ import java.time.Instant;
         @NamedQuery(name = "Post.publishPost",
                 query = "UPDATE Post t set t.status=1 where t.id=:id"),
         @NamedQuery(name = "Post.getUrlContentById",
-                query = "SELECT  p.content from Post p where p.id=:id")
+                query = "SELECT  p.content from Post p where p.id=:id"),
+        @NamedQuery(name = "Post.getStatusById",
+        query = "select  p.status from Post  p where p.id=:id")
 })
 public class Post {
 

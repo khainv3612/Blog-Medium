@@ -1,8 +1,8 @@
 <div class="content">
-  <h1 *ngIf="myPosts.length==0" class="notifi-add-post">add new post!<a href="/admin/add-post">here!</a> </h1>
+  <h1 *ngIf="myPosts.length==0" class="notifi-add-post">add new post!<a href="/admin/add-post">here!</a></h1>
   <div class="container">
     <div *ngFor="let post of myPosts">
-      <div class="blogpost">
+      <div class="blogpost" id="{{'post-'+post.id}}">
         <h3><a (click)="viewPost(post)" class="blog-title">{{post.title}}</a></h3>
         <hr>
         <div>
@@ -21,8 +21,8 @@
         <div>
           <a type="button" (click)="viewPost(post)" class="read-more btn btn-default">Read More</a></div>
         <hr>
-        <!--        <button type="button" class="btn btn-primary btn-sm" (click)="publishPost(post.idPending)">Acept</button>-->
-        <!--        <button type="button" class="btn btn-primary btn-sm" (click)="deletePost(post.idPending)">Delete</button>-->
+        <button type="button" class="btn btn-outline-primary btn-sm" (click)="editPost(post)">Edit</button>
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deletePost(post.id)">Delete</button>
         <hr>
       </div>
       <!--      <hr>-->

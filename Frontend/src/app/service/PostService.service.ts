@@ -31,16 +31,20 @@ export class PostService {
     fileReader.readAsText(file);
   }
 
-  publishPost(id: string) {
+  publishPost(id: number) {
     return this.httpClient.post(this.url + 'publish-post', id);
   }
 
-  deletePost(id: string) {
+  deletePost(id: number) {
     return this.httpClient.post(this.url + 'delete-post', id);
   }
 
-  getAllMyPost(): Observable<PostPayload[]> {
-    return this.httpClient.get<PostPayload[]>(this.url + 'my-post');
+  getAllMyPostPublished(): Observable<PostPayload[]> {
+    return this.httpClient.get<PostPayload[]>(this.url + 'my-post/published');
+  }
+
+  getAllMyPostPending(): Observable<PostPayload[]> {
+    return this.httpClient.get<PostPayload[]>(this.url + 'my-post/pending');
   }
 
 }

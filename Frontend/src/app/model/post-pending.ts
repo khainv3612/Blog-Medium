@@ -1,5 +1,5 @@
 export class PostPending {
-  idPending: String;
+  idPending: number;
   image: String;
   content: String;
   title: String;

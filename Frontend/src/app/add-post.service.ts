@@ -25,5 +25,9 @@ export class AddPostService {
   getPost(permaLink: Number): Observable<PostPayload> {
     return this.httpClient.get<PostPayload>(this.url + 'get/' + permaLink);
   }
+
+  updatePost(post: PostPayload) {
+    return this.httpClient.post(this.url + 'edit-post', post);
+  }
 }
 

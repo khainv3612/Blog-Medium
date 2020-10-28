@@ -59,17 +59,31 @@ public class PostController {
 
     @PostMapping("/delete-post")
     public ResponseEntity deletePost(@RequestBody Long id) {
-        boolean result = postServiceImpl.deletePost(id);
-        if (result) {
+//        boolean result = postServiceImpl.deletePost(id);
+//        if (result) {
             return new ResponseEntity(HttpStatus.OK);
-        } else {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+//        } else {
+//            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//        }
     }
 
-    @GetMapping("/my-post")
-    public ResponseEntity<List<Post>> getMyPost() {
-        List<Post> list = postServiceImpl.getMyPost();
+    @GetMapping("/my-post/published")
+    public ResponseEntity<List<PostDto>> getMyPostPublished() {
+        List<PostDto> list = postServiceImpl.getMyPostPublished();
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/my-post/pending")
+    public ResponseEntity<List<PostDto>> getMyPostPending() {
+        List<PostDto> list = postServiceImpl.getAllMyPostPending();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping("/edit-post")
+    public ResponseEntity editPost(@RequestBody PostDto postDto) throws IOException {
+        if (!postServiceImpl.updatePost(postDto)) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public Role roleUser(){
+    public Role roleUser() {
         return new Role(1L);
     }
 
@@ -47,11 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**")
-                .permitAll()
+                .authenticated()
                 .antMatchers("/api/posts/all")
                 .permitAll()
                 .anyRequest()
-                .authenticated();
+                .authenticated()
+                .and()
+                .oauth2Login();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

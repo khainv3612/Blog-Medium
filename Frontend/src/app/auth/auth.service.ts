@@ -32,7 +32,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    console.log(this.localStoraqeService)
     return this.localStoraqeService.retrieve('username') != null;
   }
 

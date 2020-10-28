@@ -15,4 +15,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
     Long getNextId();
 
     List<Post> getAllByAccountCreate_Id(Long id);
+
+    List<Post> getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(Long id,Status status);
 }
