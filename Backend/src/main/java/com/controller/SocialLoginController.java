@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.dto.LoginFacebookDTO;
 import com.dto.LoginGoogleDTO;
 import com.model.Account;
 import com.service.AuthService;
@@ -28,14 +29,22 @@ public class SocialLoginController {
     private IAccountService accountService;
 
     @PostMapping("/signin/google")
-    public ResponseEntity<String> userDetails(@RequestBody LoginGoogleDTO dto) {
-        if (authService.signupGoogle(dto)) {
-            String role=accountService.findByEmail(dto.getEmail()).getRole().getRole();
+    public ResponseEntity<String> loginGoogle(@RequestBody LoginGoogleDTO dto) {
+        String role = authService.signupSocial(dto);
+        if (!role.equals("")) {
             return new ResponseEntity<>(role, HttpStatus.OK);
         } else {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
 
-
+    @PostMapping("/signin/facebook")
+    public ResponseEntity<String> loginFacebook(@RequestBody LoginFacebookDTO dto) {
+        String role = authService.signupSocial(dto);
+        if (!role.equals("")) {
+            return new ResponseEntity<>(role, HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

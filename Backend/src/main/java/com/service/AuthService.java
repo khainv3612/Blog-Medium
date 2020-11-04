@@ -2,6 +2,7 @@ package com.service;
 
 import com.dto.LoginGoogleDTO;
 import com.dto.LoginRequestNomal;
+import com.dto.LoginSocialAbstactDTO;
 import com.dto.RegisterRequest;
 import com.model.Account;
 import com.model.Role;
@@ -73,22 +74,23 @@ public class AuthService {
         return Optional.of(principal);
     }
 
-    public boolean signupGoogle(LoginGoogleDTO dto) {
+    synchronized public String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      signupSocial(LoginSocialAbstactDTO dto) {
+        String role = "";
         try {
             if (!accountService.checkEmailExist(dto.getEmail())) {
                 Account account = new Account();
                 account.setUserName(dto.getUsername());
-                        
                 account.setEmail(dto.getEmail());
                 account.setTypeAccount(typeGoogle);
                 account.setImage(dto.getImage());
                 account.setRole(roleUser);
                 userRepository.save(account);
+                role = roleUser.getRole();
             }
-            return true;
+            role = accountService.findByEmail(dto.getEmail()).getRole().getRole();
         } catch (Exception e) {
             e.getMessage();
-            return false;
         }
+        return role;
     }
 }

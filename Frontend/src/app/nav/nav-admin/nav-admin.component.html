@@ -35,8 +35,16 @@
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a href="/mypost/{{'published'}}" class="logout nav-link" >My Post</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMypost" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          My Post
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownPublished">
+          <a class="dropdown-item nav-item" href="/mypost/{{'published'}}">Published</a>
+          <a class="dropdown-item nav-item" href="/mypost/{{'pending'}}">Pending</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
       </li>
       <li class="nav-item">
         <a href="" class="logout nav-link" (click)="logout()">Logout</a>

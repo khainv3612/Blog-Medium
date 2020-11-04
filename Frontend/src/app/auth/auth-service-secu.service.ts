@@ -50,10 +50,10 @@ export class AuthServiceSecu {
 
 
   logout() {
-    this.authService.signOut();
     this.localStoraqeService.clear('authenticationToken');
     this.localStoraqeService.clear('username');
     this.localStoraqeService.clear('role');
+    this.authService.signOut();
   }
 
   loginGoogle() {
