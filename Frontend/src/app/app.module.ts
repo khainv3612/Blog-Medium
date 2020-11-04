@@ -35,6 +35,7 @@ import {NavAdminComponent} from './nav/nav-admin/nav-admin.component';
 import {NavUserComponent} from './nav/nav-user/nav-user.component';
 import {NavAnonymousComponent} from './nav/nav-anonymous/nav-anonymous.component';
 import {MyPostComponent} from './personal/my-post/my-post.component';
+import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAuthServiceConfig} from 'angularx-social-login';
 
 
 @NgModule({
@@ -81,8 +82,28 @@ import {MyPostComponent} from './personal/my-post/my-post.component';
     NgxPaginationModule,
     BrowserAnimationsModule,
     MatPaginatorModule,
+    SocialLoginModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpClientInterceptor, multi: true}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpClientInterceptor, multi: true},
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '902179770868-j2ristopre632ffe3n0ssr38vs4v1e8h.apps.googleusercontent.com'
+            )
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('766443074087468')
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

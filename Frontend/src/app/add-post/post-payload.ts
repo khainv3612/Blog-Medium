@@ -5,4 +5,5 @@ export class PostPayload {
   title: String;
   username: String;
   lastUpdate: String;
+  avatarAuthor?: String;
 }

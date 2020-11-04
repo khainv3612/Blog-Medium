@@ -101,6 +101,7 @@ public class PostServiceImpl implements IPostService {
         postDto.setContent(readBlogContent(post.getContent()));
         postDto.setUsername(post.getUserCreate().getUserName());
         postDto.setLastUpdate(convertLastUpdate(post.getLastUpdate()));
+        postDto.setAvatarAuthor(post.getAccountCreate().getImage());
         return postDto;
     }
 
@@ -113,7 +114,7 @@ public class PostServiceImpl implements IPostService {
         post.setImage(postDto.getImage());
         post.setContent(postDto.getContent());
         post.setLastUpdate(Instant.now());
-        post.setUserCreate(accountServiceImpl.findByUsername(getCurrentUser().getUsername()));
+        post.setUserCreate(accountServiceImpl.findByUsername(postDto.getUsername()));
         post.setStatus(typePost);
         return post;
     }
@@ -173,6 +174,7 @@ public class PostServiceImpl implements IPostService {
                 Date update = Date.from(p.getLastUpdate());
                 pendingDTO.setLastUpdate(formatter.format(update));
                 pendingDTO.setUserCreate(p.getUserCreate().getUserName());
+                pendingDTO.setAvatarAuthor(p.getUserCreate().getImage());
                 lstPending.add(pendingDTO);
             }
         }
@@ -227,6 +229,7 @@ public class PostServiceImpl implements IPostService {
             File postFile = new File(nameFile);
             newUrl = environment.getProperty("URL_POST_PUBLISHED")
                     + nameFile.substring(31);
+            //            if change url, must change substring method in PostServiceImpl in method  movieFilePublish
             if (!postFile.renameTo(new File(newUrl))) {
                 return false;
             }

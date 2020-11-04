@@ -6,6 +6,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {delay, finalize} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-add-post',
@@ -42,7 +44,6 @@ export class AddPostComponent implements OnInit {
     toolbar1: 'insertfile undo redo | styleselect | fontselect  |bold italic | alignleft aligncenter alignright alignjustify |' +
       ' bullist numlist outdent indent | link image | ' +
       'print preview media | forecolor backcolor emoticons imageupload',
-    // toolbar2: 'print preview media | forecolor backcolor emoticons',
     image_advtab: true,
 
 
@@ -66,7 +67,7 @@ export class AddPostComponent implements OnInit {
 
 
   constructor(private addpostService: AddPostService, private storage: AngularFireStorage,
-              private router: Router, private routerActive: ActivatedRoute) {
+              private router: Router, private routerActive: ActivatedRoute, private localStoraqeService: LocalStorageService) {
     this.router.getCurrentNavigation().extras.state;
     this.addPostForm = new FormGroup({
       title: this.title,
@@ -111,6 +112,7 @@ export class AddPostComponent implements OnInit {
     this.isSaving = true;
     this.postPayload.content = this.addPostForm.get('body').value;
     this.postPayload.title = this.addPostForm.get('title').value;
+    this.postPayload.username = this.localStoraqeService.retrieve('username');
     if (this.selectedImage != null) {
       await this.uploadFileImage();
     }

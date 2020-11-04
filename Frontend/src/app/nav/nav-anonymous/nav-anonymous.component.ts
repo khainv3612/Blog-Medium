@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../../auth/auth.service';
+import {AuthServiceSecu} from '../../auth/auth-service-secu.service';
 
 @Component({
   selector: 'app-nav-anonymous',
@@ -8,7 +8,7 @@ import {AuthService} from '../../auth/auth.service';
 })
 export class NavAnonymousComponent implements OnInit {
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthServiceSecu) {
   }
 
   ngOnInit() {

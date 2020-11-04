@@ -8,6 +8,16 @@ public class PostPendingDTO implements Serializable {
     private String content;
     private String lastUpdate;
     private String userCreate;
+    private String avatarAuthor;
+
+    public String getAvatarAuthor() {
+        return avatarAuthor;
+    }
+
+    public void setAvatarAuthor(String avatarAuthor) {
+        this.avatarAuthor = avatarAuthor;
+    }
+
 
     public String getImage() {
         return image;
@@ -59,13 +69,14 @@ public class PostPendingDTO implements Serializable {
         this.userCreate = userCreate;
     }
 
-    public PostPendingDTO(Long idPending, String title, String content, String lastUpdate, String userCreate, String image) {
+    public PostPendingDTO(Long idPending, String title, String content, String lastUpdate, String userCreate, String image,String avatarAuthor) {
         this.idPending = idPending;
         this.title = title;
         this.content = content;
         this.lastUpdate = lastUpdate;
         this.userCreate = userCreate;
         this.image = image;
+        this.avatarAuthor=avatarAuthor;
     }
 
     public PostPendingDTO() {

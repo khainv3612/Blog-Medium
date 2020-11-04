@@ -5,4 +5,5 @@ export class PostPending {
   title: String;
   lastUpdate: String;
   userCreate: String;
+  avatarAuthor?: String;
 }

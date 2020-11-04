@@ -3,6 +3,11 @@ package com.dto;
 public class PostDto {
     private Long id;
     private String content;
+    private String title;
+    private String username;
+    private String image;
+    private String lastUpdate;
+    private String avatarAuthor;
 
     public String getImage() {
         return image;
@@ -12,8 +17,6 @@ public class PostDto {
         this.image = image;
     }
 
-    private String image;
-
     public String getLastUpdate() {
         return lastUpdate;
     }
@@ -22,9 +25,13 @@ public class PostDto {
         this.lastUpdate = lastUpdate;
     }
 
-    private String title;
-    private String username;
-    private String lastUpdate;
+    public String getAvatarAuthor() {
+        return avatarAuthor;
+    }
+
+    public void setAvatarAuthor(String avatarAuthor) {
+        this.avatarAuthor = avatarAuthor;
+    }
 
     public Long getId() {
         return id;

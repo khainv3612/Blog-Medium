@@ -1,6 +1,6 @@
 package com.dto;
 
-public class LoginRequest {
+public class LoginRequestNomal {
     private String username;
     private String password;
 

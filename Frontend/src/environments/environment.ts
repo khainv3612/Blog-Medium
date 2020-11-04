@@ -27,7 +27,8 @@ export const environment = {
   },
   URL_API_POST: 'http://localhost:8080/api/posts/',
   URL_API_AUTH: 'http://localhost:8080/api/auth/',
-  URL_SAVE_IMAGE_BLOG_FIREBASE: 'image-blog/'
+  URL_SAVE_IMAGE_BLOG_FIREBASE: 'image-blog/',
+  URL_API_LOGIN_SOCIAL: 'http://localhost:8080/login-social/'
 };
 
 /*

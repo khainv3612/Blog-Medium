@@ -59,12 +59,12 @@ public class PostController {
 
     @PostMapping("/delete-post")
     public ResponseEntity deletePost(@RequestBody Long id) {
-//        boolean result = postServiceImpl.deletePost(id);
-//        if (result) {
+        boolean result = postServiceImpl.deletePost(id);
+        if (result) {
             return new ResponseEntity(HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-//        }
+        } else {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/my-post/published")

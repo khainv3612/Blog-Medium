@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {PostPending} from '../model/post-pending';
 import {environment} from '../../environments/environment';
 import {saveAs} from 'file-saver';
-import {AuthService} from '../auth/auth.service';
+import {AuthServiceSecu} from '../auth/auth-service-secu.service';
 import {PostPayload} from '../add-post/post-payload';
 
 @Injectable({
@@ -13,7 +13,7 @@ import {PostPayload} from '../add-post/post-payload';
 export class PostService {
   fileContent: string | ArrayBuffer = '';
 
-  constructor(private httpClient: HttpClient, private authService: AuthService) {
+  constructor(private httpClient: HttpClient, private authService: AuthServiceSecu) {
   }
 
   private url = environment.URL_API_POST;

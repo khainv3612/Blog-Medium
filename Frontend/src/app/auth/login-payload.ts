@@ -1,4 +1,6 @@
-export class LoginPayload{
+export class LoginPayload {
   username: string;
-  password: string
+  password?: string;
+  image?: string;
+  email?: string;
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity
@@ -26,8 +27,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @NotEmpty
+    @NotNull
     private String title;
     @NotEmpty
+    @NotNull
     private String image;
 
     public String getImage() {

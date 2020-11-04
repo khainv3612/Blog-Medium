@@ -1,6 +1,7 @@
 package com.config;
 
 import com.model.Status;
+import com.model.TypeAccount;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -35,5 +36,25 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public Status sttPublished(){
         return new Status(1L);
+    }
+
+    @Bean
+    public TypeAccount typeNomal(){
+        return new TypeAccount(1L);
+    }
+
+    @Bean
+    public TypeAccount typeGoogle(){
+        return new TypeAccount(2L);
+    }
+
+    @Bean
+    public TypeAccount typeFacebook(){
+        return new TypeAccount(3L);
+    }
+
+    @Bean
+    public TypeAccount typeGithub(){
+        return new TypeAccount(4L);
     }
 }

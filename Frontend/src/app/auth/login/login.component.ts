@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {LoginPayload} from '../login-payload';
-import {AuthService} from '../auth.service';
+import {AuthServiceSecu} from '../auth-service-secu.service';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
+import {SocialAuthService} from 'angularx-social-login';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +15,9 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   loginPayload: LoginPayload;
+  urlLoginGoogle = environment.URL_API_LOGIN_SOCIAL + 'signin/google';
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthServiceSecu, private router: Router, private authService1: SocialAuthService) {
     this.loginForm = new FormGroup({
       username: new FormControl(),
       password: new FormControl()
@@ -26,6 +29,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.authService1.authState.subscribe((user) => {
+      // this.user = user;
+      // this.loggedIn = (user != null);
+    });
   }
 
   onSubmit() {
@@ -40,5 +47,13 @@ export class LoginComponent implements OnInit {
         console.log('Login failed');
       }
     });
+  }
+
+  loginGoogle() {
+    this.authService.loginGoogle();
+  }
+
+  loginGaceBook() {
+    this.authService.loginInFaceBook();
   }
 }

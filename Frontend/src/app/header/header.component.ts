@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../auth/auth.service';
+import {AuthServiceSecu} from '../auth/auth-service-secu.service';
 import { createPopper } from '@popperjs/core';
 
 @Component({
@@ -9,7 +9,7 @@ import { createPopper } from '@popperjs/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthServiceSecu) {
   }
 
   ngOnInit() {
