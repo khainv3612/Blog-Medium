@@ -45,16 +45,18 @@ public class PostController {
     @ResponseBody
     public ResponseEntity<List<PostPendingDTO>> getAllPostPending(@RequestParam(name = "page", defaultValue = "0") int page,
                                                                   @RequestParam(name = "size", defaultValue = "10") int size) throws FileNotFoundException {
+
         List<PostPendingDTO> list = postServiceImpl.getAllPostPending(page, size);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-//    @GetMapping("/post-publish")
-//    @ResponseBody
-//    public ResponseEntity<List<PostDto>> getAllPostPublish() throws FileNotFoundException {
-//        List<PostDto> list = postServiceImpl.getAllPostPublish();
-//        return new ResponseEntity<>(list, HttpStatus.OK);
-//    }
+    @GetMapping("/post-publish")
+    @ResponseBody
+    public ResponseEntity<List<PostDto>> getAllPostPublish(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                           @RequestParam(name = "size", defaultValue = "10") int size) throws FileNotFoundException {
+        List<PostDto> list = postServiceImpl.getAllPostPublish(page, size);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 
     @PostMapping("/publish-post")
     public ResponseEntity publishPost(@RequestBody Long id) {
@@ -93,5 +95,11 @@ public class PostController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/count-post/{postType}")
+    public Integer countPost(@PathVariable("postType") String type) {
+        int result = postServiceImpl.countPost(type);
+        return result;
     }
 }

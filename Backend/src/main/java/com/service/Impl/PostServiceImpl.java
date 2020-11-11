@@ -50,7 +50,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public List<PostDto> showAllPosts() {
         Pageable pageable = PageRequest.of(0, 99999999);
-        Page<Post> posts = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished,pageable);
+        Page<Post> posts = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished, pageable);
         return posts.stream().map(this::mapFromPostToDto).collect(toList());
     }
 
@@ -165,7 +165,7 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<PostPendingDTO> getAllPostPending(int size, int page) throws FileNotFoundException {
+    public List<PostPendingDTO> getAllPostPending(int page, int size) throws FileNotFoundException {
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> lstPostPending = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPending, pageable);
         List<PostPendingDTO> lstPending = new ArrayList<>();
@@ -186,9 +186,9 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<PostDto> getAllPostPublish(int size, int page) throws FileNotFoundException {
+    public List<PostDto> getAllPostPublish(int page, int size) throws FileNotFoundException {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Post> lstPostPublish = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished,pageable);
+        Page<Post> lstPostPublish = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished, pageable);
         return lstPostPublish.stream().map(this::mapFromPostToDto).collect(toList());
     }
 
@@ -275,6 +275,25 @@ public class PostServiceImpl implements IPostService {
         query.setParameter("id", id);
         Status status = (Status) query.getResultList().get(0);
         return status;
+    }
+
+    @Override
+    @Transactional
+    public Integer countPost(String postType) {
+        Query query = entityManager.createNamedQuery("Post.countPost");
+        switch (postType) {
+            case "review-post": {
+                query.setParameter("status", sttPending);
+                break;
+            }
+            case "post-publish": {
+                query.setParameter("status", sttPublished);
+                break;
+            }
+        }
+        int result = Integer.parseInt(query.getResultList().get(0).toString());
+
+        return result;
     }
 
     public User getCurrentUser() {

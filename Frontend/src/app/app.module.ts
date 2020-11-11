@@ -39,7 +39,9 @@ import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAut
 import {JwSocialButtonsModule} from 'jw-angular-social-buttons';
 import {FacebookModule} from 'ngx-facebook';
 import {MaterialModule} from './material.module';
-import { PreviewPostComponent } from './personal/preview-post/preview-post.component';
+import {PreviewPostComponent} from './personal/preview-post/preview-post.component';
+import {MatTableModule} from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -90,7 +92,9 @@ import { PreviewPostComponent } from './personal/preview-post/preview-post.compo
     // JwSocialButtonsModule,
     SocialLoginModule,
     FacebookModule.forRoot(),
-    MaterialModule
+    MaterialModule,
+    MatTableModule,
+    MatIconModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpClientInterceptor, multi: true},
     {

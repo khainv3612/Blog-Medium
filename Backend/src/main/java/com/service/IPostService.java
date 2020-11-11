@@ -31,9 +31,9 @@ public interface IPostService {
 
     String readBlogContent(String urlPost);
 
-    List<PostPendingDTO> getAllPostPending(int size, int page) throws FileNotFoundException;
+    List<PostPendingDTO> getAllPostPending(int page, int size) throws FileNotFoundException;
 
-    List<PostDto> getAllPostPublish(int size, int page) throws FileNotFoundException;
+    List<PostDto> getAllPostPublish(int page, int size) throws FileNotFoundException;
 
     Long getNextIdPost();
 
@@ -49,4 +49,6 @@ public interface IPostService {
     List<PostDto> getAllMyPostPending();
 
     Status getStatusById(Long id);
+
+    Integer countPost(String postType);
 }

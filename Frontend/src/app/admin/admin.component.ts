@@ -10,6 +10,7 @@ import {PostComponent} from '../post/post.component';
 import {MatDialog} from '@angular/material/dialog';
 import {auto} from '@popperjs/core';
 import {PreviewPostComponent} from '../personal/preview-post/preview-post.component';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-admin',
@@ -19,6 +20,9 @@ import {PreviewPostComponent} from '../personal/preview-post/preview-post.compon
 export class AdminComponent implements OnInit {
   postsPending: PostPending[];
   postPublish: PostPayload[];
+  totalElements = 0;
+  loading: boolean;
+
   constructor(private postService: PostService, private router: Router, private routerActive: ActivatedRoute, public dialog: MatDialog
   ) {
   }
@@ -39,17 +43,21 @@ export class AdminComponent implements OnInit {
         break;
       }
     }
+    this.countPost();
   }
 
   showPostPending() {
-    this.postService.getAllPostPending().subscribe(value => {
+    const request = {};
+    request['page'] = 0;
+    request['size'] = 1;
+    this.postService.getAllPostPending(request).subscribe(value => {
         this.postsPending = value;
       }
     );
   }
 
   showPostPublish() {
-    this.postService.getAllPostPublish().subscribe(value => {
+    this.postService.getAllPostPublish({page: '0', size: '1'}).subscribe(value => {
         this.postPublish = value;
       }
     );
@@ -109,5 +117,53 @@ export class AdminComponent implements OnInit {
         dialogSubmitSubscription.unsubscribe();
       });
 
+  }
+
+  private getPostPending(request) {
+    // this.loading = true;
+    this.postService.getAllPostPending(request)
+      .subscribe(data => {
+        this.postsPending = data;
+        this.totalElements = 2;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      });
+  }
+
+  private getPostPublish(request) {
+    // this.loading = true;
+    this.postService.getAllPostPublish(request)
+      .subscribe(data => {
+        this.postPublish = data;
+        this.loading = false;
+      }, error => {
+        this.loading = false;
+      });
+  }
+
+  nextPage(event: PageEvent, action: string) {
+    const request = {};
+    request['page'] = event.pageIndex.toString();
+    request['size'] = event.pageSize.toString();
+    switch (action) {
+      case 'pending': {
+        this.getPostPending(request);
+        break;
+      }
+      case 'publish': {
+        this.getPostPublish(request);
+        break;
+      }
+    }
+
+  }
+
+  countPost() {
+    this.postService.countPost(this.action).subscribe(data => {
+      this.totalElements = data;
+    }, error => {
+      console.log(error);
+    });
   }
 }

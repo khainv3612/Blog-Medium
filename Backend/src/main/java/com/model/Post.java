@@ -18,7 +18,9 @@ import java.time.Instant;
         @NamedQuery(name = "Post.getUrlContentById",
                 query = "SELECT  p.content from Post p where p.id=:id"),
         @NamedQuery(name = "Post.getStatusById",
-        query = "select  p.status from Post  p where p.id=:id")
+                query = "select  p.status from Post  p where p.id=:id"),
+        @NamedQuery(name = "Post.countPost",
+                query = "select count (p.id) from Post p where p.status=:status")
 })
 public class Post {
 

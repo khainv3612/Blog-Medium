@@ -18,17 +18,14 @@ export class PostService {
 
   private url = environment.URL_API_POST;
 
-  getAllPostPending(): Observable<PostPending[]> {
-    return this.httpClient.get<PostPending[]>(this.url + 'post-pending', {responseType: 'json'});
+  getAllPostPending(request): Observable<PostPending[]> {
+    const params = request;
+    return this.httpClient.get<PostPending[]>(this.url + 'post-pending', {params, responseType: 'json'});
   }
 
-  readContentBlogPending(file: Blob) {
-    const fileReader: FileReader = new FileReader();
-    const self = this;
-    fileReader.onloadend = function (x) {
-      self.fileContent = fileReader.result;
-    };
-    fileReader.readAsText(file);
+  getAllPostPublish(request): Observable<PostPayload[]> {
+    const params = request;
+    return this.httpClient.get<PostPayload[]>(this.url + 'post-publish', {params, responseType: 'json'});
   }
 
   publishPost(id: number) {
@@ -47,8 +44,8 @@ export class PostService {
     return this.httpClient.get<PostPayload[]>(this.url + 'my-post/pending');
   }
 
-  getAllPostPublish(): Observable<PostPayload[]> {
-    return this.httpClient.get<PostPayload[]>(this.url + 'post-publish', {responseType: 'json'});
+  countPost(request: string) {
+    return this.httpClient.get<number>(this.url + 'count-post/' + request);
   }
 
 }
