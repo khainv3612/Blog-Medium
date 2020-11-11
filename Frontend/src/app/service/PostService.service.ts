@@ -47,4 +47,8 @@ export class PostService {
     return this.httpClient.get<PostPayload[]>(this.url + 'my-post/pending');
   }
 
+  getAllPostPublish(): Observable<PostPayload[]> {
+    return this.httpClient.get<PostPayload[]>(this.url + 'post-publish', {responseType: 'json'});
+  }
+
 }

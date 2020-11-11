@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AddPostService} from '../add-post.service';
 import {PostPayload} from '../add-post/post-payload';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {} from '../../app/material.module';
+import {FacebookService, UIParams, UIResponse} from 'ngx-facebook';
 
 // @ts-ignore
 @Component({
@@ -23,7 +26,6 @@ export class PostComponent implements OnInit {
     } else {
       this.post = JSON.parse(localStorage.getItem('post-detail'));
     }
-
   }
 
 }

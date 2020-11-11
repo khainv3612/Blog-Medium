@@ -36,6 +36,10 @@ import {NavUserComponent} from './nav/nav-user/nav-user.component';
 import {NavAnonymousComponent} from './nav/nav-anonymous/nav-anonymous.component';
 import {MyPostComponent} from './personal/my-post/my-post.component';
 import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAuthServiceConfig} from 'angularx-social-login';
+import {JwSocialButtonsModule} from 'jw-angular-social-buttons';
+import {FacebookModule} from 'ngx-facebook';
+import {MaterialModule} from './material.module';
+import { PreviewPostComponent } from './personal/preview-post/preview-post.component';
 
 
 @NgModule({
@@ -54,6 +58,7 @@ import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAut
     NavUserComponent,
     NavAnonymousComponent,
     MyPostComponent,
+    PreviewPostComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +70,7 @@ import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAut
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
       {path: 'register', component: RegisterComponent},
-      {path: 'admin/review-post', component: AdminComponent, canActivate: [AuthGuard]},
+      {path: 'admin/manage/:action', component: AdminComponent, canActivate: [AuthGuard]},
       {path: 'post', component: PostComponent},
       {path: 'login', component: LoginComponent},
       {path: 'register-success', component: RegisterSuccessComponent},
@@ -82,7 +87,10 @@ import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAut
     NgxPaginationModule,
     BrowserAnimationsModule,
     MatPaginatorModule,
-    SocialLoginModule
+    // JwSocialButtonsModule,
+    SocialLoginModule,
+    FacebookModule.forRoot(),
+    MaterialModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpClientInterceptor, multi: true},
     {
@@ -104,7 +112,8 @@ import {GoogleLoginProvider, FacebookLoginProvider, SocialLoginModule, SocialAut
       } as SocialAuthServiceConfig,
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [PostComponent]
 })
 export class AppModule {
 }

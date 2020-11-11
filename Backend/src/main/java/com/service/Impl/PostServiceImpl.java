@@ -11,6 +11,9 @@ import com.service.IAccountService;
 import com.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +49,8 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public List<PostDto> showAllPosts() {
-        List<Post> posts = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished);
+        Pageable pageable = PageRequest.of(0, 99999999);
+        Page<Post> posts = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished,pageable);
         return posts.stream().map(this::mapFromPostToDto).collect(toList());
     }
 
@@ -77,9 +81,9 @@ public class PostServiceImpl implements IPostService {
             return false;
         Status status = getStatusById(postDto.getId());
         Post post = mapFromDtoToPost(postDto, status);
-        if (status.getIdStatus().equals(sttPending.getIdStatus())){
+        if (status.getIdStatus().equals(sttPending.getIdStatus())) {
             writeBlog(post, environment.getProperty("URL_POST_PENDING"));
-        } else if (status.getIdStatus().equals(sttPublished.getIdStatus())){
+        } else if (status.getIdStatus().equals(sttPublished.getIdStatus())) {
             writeBlog(post, environment.getProperty("URL_POST_PUBLISHED"));
         }
         postRepository.save(post);
@@ -107,6 +111,7 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Post mapFromDtoToPost(PostDto postDto, Status typePost) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
         Post post = new Post();
         if (postDto.getId() != null)
             post.setId(postDto.getId());
@@ -160,10 +165,10 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<PostPendingDTO> getAllPostPending() throws FileNotFoundException {
-        List<Post> lstPostPending = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPending);
+    public List<PostPendingDTO> getAllPostPending(int size, int page) throws FileNotFoundException {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> lstPostPending = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPending, pageable);
         List<PostPendingDTO> lstPending = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MM yyyy HH:mm:ss");
         if (lstPostPending != null && !lstPostPending.isEmpty()) {
             for (Post p : lstPostPending) {
                 PostPendingDTO pendingDTO = new PostPendingDTO();
@@ -171,14 +176,20 @@ public class PostServiceImpl implements IPostService {
                 pendingDTO.setContent(readBlogContent(p.getContent()));
                 pendingDTO.setImage(p.getImage());
                 pendingDTO.setTitle(p.getTitle());
-                Date update = Date.from(p.getLastUpdate());
-                pendingDTO.setLastUpdate(formatter.format(update));
+                pendingDTO.setLastUpdate(convertLastUpdate(p.getLastUpdate()));
                 pendingDTO.setUserCreate(p.getUserCreate().getUserName());
                 pendingDTO.setAvatarAuthor(p.getUserCreate().getImage());
                 lstPending.add(pendingDTO);
             }
         }
         return lstPending.stream().collect(toList());
+    }
+
+    @Override
+    public List<PostDto> getAllPostPublish(int size, int page) throws FileNotFoundException {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> lstPostPublish = postRepository.findAllByStatusEqualsOrderByIdDesc(sttPublished,pageable);
+        return lstPostPublish.stream().map(this::mapFromPostToDto).collect(toList());
     }
 
     @Override

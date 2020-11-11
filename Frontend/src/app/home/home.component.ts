@@ -3,6 +3,7 @@ import {AddPostService} from '../add-post.service';
 import {Observable} from 'rxjs';
 import {PostPayload} from '../add-post/post-payload';
 import {Route, Router} from '@angular/router';
+import {FacebookService, UIParams, UIResponse} from 'ngx-facebook';
 
 @Component({
   selector: 'app-home',
@@ -28,5 +29,4 @@ export class HomeComponent implements OnInit {
   viewPost(post: PostPayload) {
     this.router.navigateByUrl('/post', {state: post});
   }
-
 }

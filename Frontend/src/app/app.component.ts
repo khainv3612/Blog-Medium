@@ -14,7 +14,7 @@ export class AppComponent {
   title = 'ng-spring-blog-frontend';
 
   constructor(private localStoraqeService: LocalStorageService, private authService: AuthServiceSecu) {
-    this.authService.logout();
+    // this.authService.logout();
   }
 
 

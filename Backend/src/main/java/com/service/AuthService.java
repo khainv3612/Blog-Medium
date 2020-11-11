@@ -60,8 +60,9 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(LoginRequestNomal loginRequestNomal) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequestNomal.getUsername(),
-                loginRequestNomal.getPassword()));
+        Authentication authenticate = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequestNomal.getUsername(),
+                        loginRequestNomal.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
         return new AuthenticationResponse(authenticationToken, loginRequestNomal.getUsername(),

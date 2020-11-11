@@ -1,5 +1,4 @@
 
-
 <div class="container">
 <!--  <div class="mainheading">-->
 <!--    <h1 class="sitetitle">Mediumish</h1>-->
@@ -55,22 +54,21 @@
           </div>
       </div>
       <!-- end post -->
+    </div>
+    <div style="text-align: center">
+      <pagination-controls (pageChange)="page = $event"
+                           previousLabel="Prevs"
+                           nextLabel="Next"
+                           responsive="true"
+                           autoHide="true"></pagination-controls>
+      <label>Items per page:
+        <select [(ngModel)]="itemsPerPage">
+          <option *ngFor="let size of itemsPerPageOption" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </label>
 
-      <div style="text-align: center">
-        <pagination-controls (pageChange)="page = $event"
-                             previousLabel="Prevs"
-                             nextLabel="Next"
-                             responsive="true"
-                             autoHide="true"></pagination-controls>
-        <label>Items per page:
-          <select [(ngModel)]="itemsPerPage">
-            <option *ngFor="let size of itemsPerPageOption" [ngValue]="size">
-              {{ size }}
-            </option>
-          </select>
-        </label>
-
-      </div>
     </div>
   </section>
   <!-- End Featured

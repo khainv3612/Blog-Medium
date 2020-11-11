@@ -43,10 +43,18 @@ public class PostController {
 
     @GetMapping("/post-pending")
     @ResponseBody
-    public ResponseEntity<List<PostPendingDTO>> getAllPostPending() throws FileNotFoundException {
-        List<PostPendingDTO> list = postServiceImpl.getAllPostPending();
+    public ResponseEntity<List<PostPendingDTO>> getAllPostPending(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                                  @RequestParam(name = "size", defaultValue = "10") int size) throws FileNotFoundException {
+        List<PostPendingDTO> list = postServiceImpl.getAllPostPending(page, size);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+//    @GetMapping("/post-publish")
+//    @ResponseBody
+//    public ResponseEntity<List<PostDto>> getAllPostPublish() throws FileNotFoundException {
+//        List<PostDto> list = postServiceImpl.getAllPostPublish();
+//        return new ResponseEntity<>(list, HttpStatus.OK);
+//    }
 
     @PostMapping("/publish-post")
     public ResponseEntity publishPost(@RequestBody Long id) {
