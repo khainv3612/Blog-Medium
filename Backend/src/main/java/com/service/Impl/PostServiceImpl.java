@@ -8,6 +8,7 @@ import com.model.Status;
 import com.repository.PostRepository;
 import com.service.AuthService;
 import com.service.IAccountService;
+import com.service.IMailService;
 import com.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -46,6 +47,9 @@ public class PostServiceImpl implements IPostService {
     private Environment environment;
     @Autowired
     private EntityManager entityManager;
+
+    @Autowired
+    private IMailService mailService;
 
     @Override
     public List<PostDto> showAllPosts() {

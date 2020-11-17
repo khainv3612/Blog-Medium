@@ -1,4 +1,0 @@
-<app-nav-user *ngIf=" authService.getRole()=='ROLE_USER'"></app-nav-user>
-<app-nav-admin *ngIf="authService.getRole()=='ROLE_ADMIN'"></app-nav-admin>
-<app-nav-anonymous *ngIf="!authService.isAuthenticated()"></app-nav-anonymous>
-

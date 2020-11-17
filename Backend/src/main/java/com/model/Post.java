@@ -23,8 +23,6 @@ import java.time.Instant;
                 query = "select count (p.id) from Post p where p.status=:status")
 })
 public class Post {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

@@ -5,6 +5,8 @@ import com.model.Role;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface IAccountService {
     Account findByUsername(String username);
@@ -12,4 +14,5 @@ public interface IAccountService {
     Boolean signInByGoogle(OAuth2AuthenticatedPrincipal user);
     Boolean checkEmailExist(String email);
     Boolean checkUsernameExist(String username);
+    List<Account>  getAdmin();
 }

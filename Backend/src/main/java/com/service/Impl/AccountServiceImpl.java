@@ -8,10 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountServiceImpl implements IAccountService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    Role roleAdmin;
+    @Autowired
+    Role roleUser;
 
     @Override
     public Account findByUsername(String username) {
@@ -21,7 +27,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Account findByEmail(String email) {
-        Account account=userRepository.findByEmail(email).get(0);
+        Account account = userRepository.findByEmail(email).get(0);
         return account;
     }
 
@@ -33,12 +39,18 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public Boolean checkEmailExist(String email) {
-         return !userRepository.findByEmail(email).isEmpty();
+        return !userRepository.findByEmail(email).isEmpty();
     }
 
     @Override
     public Boolean checkUsernameExist(String username) {
         return findByUsername(username) == null;
+    }
+
+    @Override
+    public List<Account> getAdmin() {
+        List<Account> lst = userRepository.getAllByRole(roleAdmin);
+        return lst;
     }
 
 }

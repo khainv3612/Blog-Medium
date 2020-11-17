@@ -3,6 +3,7 @@ package com.controller;
 import com.dto.PostDto;
 import com.dto.PostPendingDTO;
 import com.model.Post;
+import com.service.IMailService;
 import com.service.IPostService;
 import com.service.Impl.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +23,23 @@ public class PostController {
 
     @Autowired
     private IPostService postServiceImpl;
+    @Autowired
+    private IMailService mailService;
 
     @PostMapping
     public ResponseEntity createPost(@RequestBody PostDto postDto) throws IOException {
         if (!postServiceImpl.createPost(postDto)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        mailService.sendEmailPending(postDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<PostDto>> showAllPosts() {
-        return new ResponseEntity<>(postServiceImpl.showAllPosts(), HttpStatus.OK);
+        List<PostDto> list=postServiceImpl.showAllPosts();
+        mailService.sendMail(list.get(0).getContent());
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")

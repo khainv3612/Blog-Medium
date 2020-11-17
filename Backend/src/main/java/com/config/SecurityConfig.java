@@ -39,6 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new Role(1L);
     }
 
+    @Bean
+    public Role roleAdmin() {
+        return new Role(2L);
+    }
+
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -54,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/posts/**")
                 .permitAll()
                 .antMatchers("/login-social/**")
+                .permitAll()
+                .antMatchers("/api/comment/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

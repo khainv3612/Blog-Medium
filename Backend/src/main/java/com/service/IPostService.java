@@ -51,4 +51,5 @@ public interface IPostService {
     Status getStatusById(Long id);
 
     Integer countPost(String postType);
+
 }
