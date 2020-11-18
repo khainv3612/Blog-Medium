@@ -1,0 +1,43 @@
+.header{
+  padding: 5px 20px;
+  background: royalblue;
+}
+
+.title{
+  color: aliceblue;
+  text-decoration: none;
+}
+
+.login,.register{
+  float: right;
+  text-decoration: none;
+  color: aliceblue;
+  padding-top: 10px;
+}
+
+.logout,.new-post{
+  float: right;
+  color: #01080e;
+  padding-top: 10px;
+}
+
+.logout:hover, .new-post:hover{
+  color: #01080e;
+  text-decoration: none;
+}
+
+.logo{
+  width: 150px;
+  height: 55px;
+}
+
+.navbar-config{
+  margin-left: 500px;
+  padding-right: 100px;
+}
+
+.dropdown-config{
+  float: left;
+}
+
+

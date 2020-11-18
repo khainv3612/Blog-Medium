@@ -1,0 +1,126 @@
+
+<body>
+<div class="container-xl" *ngIf="action=='post-publish'">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-8"><h2>Post Published <b>Details</b></h2></div>
+          <div class="col-sm-4">
+            <div class="search-box">
+              <i class="material-icons">&#xE8B6;</i>
+              <input type="text" class="form-control" placeholder="Search&hellip;">
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped table-hover table-bordered table-manage">
+        <thead>
+        <tr>
+          <th width="5%">#</th>
+          <th>Title</th>
+          <th width="10%">Avatar</th>
+          <th>Author</th>
+          <th>Last Update</th>
+          <th width="13%">Actions</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let post of postPublish">
+        <tr id="{{'post-'+post.id}}">
+          <td>1</td>
+          <td>{{post.title}}</td>
+          <td>
+            <span class="meta-footer-thumb">
+								<a href="/"><img class="author-thumb"
+                                 src="{{post.avatarAuthor}}"
+                                 alt="Sal"></a>
+								</span>
+          </td>
+          <td>
+            <span>
+            {{post.username}}
+              </span>
+          </td>
+          <td>{{post.lastUpdate}}</td>
+          <td>
+            <a (click)="openDialog(post.title,post.content,post)" style="cursor: pointer" class="view" title="View"
+               data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+            <!--            <a (click)="publishPost(post.id)" style="cursor: pointer" class="active" title="Publish" data-toggle="tooltip"><mat-icon style="color: #00ff22">verified_user</mat-icon></a>-->
+            <a (click)="deletePost(post.id)" style="cursor: pointer" class="delete" title="Delete"
+               data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mat-paginator [pageSizeOptions]="[1,2,3]" [pageSize]=pageSize [length]="totalElements"
+                     (page)="nextPage($event,'publish')">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-xl" *ngIf="action=='review-post'">
+  <div class="table-responsive">
+    <div class="table-wrapper">
+      <div class="table-title">
+        <div class="row">
+          <div class="col-sm-8"><h2>Post Pending <b>Details</b></h2></div>
+          <div class="col-sm-4">
+            <div class="search-box">
+              <i class="material-icons">&#xE8B6;</i>
+              <input type="text" class="form-control" placeholder="Search&hellip;">
+            </div>
+          </div>
+        </div>
+      </div>
+      <table class="table table-striped table-hover table-bordered table-manage">
+        <thead>
+        <tr>
+          <th width="5%">#</th>
+          <th>Title</th>
+          <th width="10%">Avatar</th>
+          <th>Author</th>
+          <th>Last Update</th>
+          <th width="13%">Actions</th>
+        </tr>
+        </thead>
+        <tbody *ngFor="let post of postsPending">
+        <tr id="{{'post-'+post.idPending}}">
+          <td>1</td>
+          <td>{{post.title}}</td>
+          <td>
+            <span class="meta-footer-thumb">
+								<a href="/"><img class="author-thumb"
+                                 src="{{post.avatarAuthor}}"
+                                 alt="Sal"></a>
+								</span>
+          </td>
+          <td>
+            <span>
+            {{post.userCreate}}
+              </span>
+          </td>
+          <td>{{post.lastUpdate}}</td>
+          <td>
+            <a (click)="openDialog(post.title,post.content,post)" style="cursor: pointer" class="view" title="View"
+               data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+            <a (click)="publishPost(post.idPending)" style="cursor: pointer" class="active" title="Publish"
+               data-toggle="tooltip">
+              <mat-icon style="color: #00ff22">verified_user</mat-icon>
+            </a>
+            <a (click)="deletePost(post.idPending)" style="cursor: pointer" class="delete" title="Delete"
+               data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <mat-paginator [pageSizeOptions]="[1,2,3]" [pageSize]=pageSize [length]="totalElements"
+                     (page)="nextPage($event,'pending')">
+      </mat-paginator>
+    </div>
+  </div>
+</div>
+</body>
+
+

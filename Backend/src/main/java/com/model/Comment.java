@@ -7,6 +7,13 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "COMMENT")
+@NamedQueries({
+        @NamedQuery(name = "Comment.getNextId",
+                query = "SELECT MAX(id) FROM Comment"),
+        @NamedQuery(name = "Comment.countComment",
+
+                query = "select count (c.id) from Comment c where c.post.id=:idPost")
+})
 public class Comment {
 
     @Id

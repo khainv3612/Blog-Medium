@@ -83,13 +83,13 @@ public class PostController {
         }
     }
 
-    @GetMapping("/my-post/published")
-    public ResponseEntity<List<PostDto>> getMyPostPublished() {
-        List<PostDto> list = postServiceImpl.getMyPostPublished();
+    @PostMapping("/my-post/published")
+    public ResponseEntity<List<PostDto>> getMyPostPublished(@RequestBody String username) {
+        List<PostDto> list = postServiceImpl.getMyPostPublished(username);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/my-post/pending")
+    @PostMapping("/my-post/pending")
     public ResponseEntity<List<PostDto>> getMyPostPending() {
         List<PostDto> list = postServiceImpl.getAllMyPostPending();
         return new ResponseEntity<>(list, HttpStatus.OK);

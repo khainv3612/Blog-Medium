@@ -9,11 +9,19 @@ import java.util.List;
 
 @Service
 public interface ICommentService {
-    List<CommentDTO> getCommentByIdPost(Long idPost);
+    List<CommentDTO> getCommentByIdPost(Long idPost, int page, int size);
 
     CommentDTO convertToDTO(Comment comment);
 
     String convertLastUpdate(Instant lastUpdate);
 
-    void addNewComment(Comment comment);
+    CommentDTO addNewComment(CommentDTO commentDTO);
+
+    Comment convertToComment(CommentDTO commentDTO);
+
+    Long getNextId();
+
+    Comment getById(Long id);
+
+    Integer countComment(Long idPost);
 }

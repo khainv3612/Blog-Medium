@@ -45,7 +45,7 @@ public interface IPostService {
 
     boolean movieFilePublish(String nameFile, Long id) throws IOException;
 
-    List<PostDto> getMyPostPublished();
+    List<PostDto> getMyPostPublished(String username);
     List<PostDto> getAllMyPostPending();
 
     Status getStatusById(Long id);

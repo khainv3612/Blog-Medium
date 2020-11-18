@@ -259,9 +259,9 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<PostDto> getMyPostPublished() {
+    public List<PostDto> getMyPostPublished(String username) {
         List<Post> list =
-                postRepository.getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(accountServiceImpl.findByUsername(getCurrentUser().getUsername()).getId(), sttPublished);
+                postRepository.getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(accountServiceImpl.findByUsername(username).getId(), sttPublished);
         return list.stream().map(this::mapFromPostToDto).collect(toList());
     }
 

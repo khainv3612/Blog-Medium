@@ -16,14 +16,25 @@ public class CommentController {
     @Autowired
     private ICommentService commentService;
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<List<CommentDTO>> getAllCommentByPost(@PathVariable("id") Long id) {
-        List<CommentDTO> commentDTOS = commentService.getCommentByIdPost(id);
+    @GetMapping("/get/{id}/{page}/{size}")
+    public ResponseEntity<List<CommentDTO>> getAllCommentByPost(@PathVariable("id") Long id, @PathVariable("page") int page,
+                                                                @PathVariable("size") int size) {
+        List<CommentDTO> commentDTOS = commentService.getCommentByIdPost(id, page, size);
         return new ResponseEntity<>(commentDTOS, HttpStatus.OK);
     }
 
     @PostMapping("/add-comment")
-    public void addNewComment() {
+    public ResponseEntity<CommentDTO> addNewComment(@RequestBody CommentDTO commentDTO) {
+        CommentDTO commentDTO1 = commentService.addNewComment(commentDTO);
+        if (null != commentDTO1) {
+            return new ResponseEntity<>(commentDTO1, HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.FAILED_DEPENDENCY);
+    }
 
+    @GetMapping("/count-comment/{id}")
+    public ResponseEntity<Integer> countComment(@PathVariable("id") Long id) {
+        Integer num = commentService.countComment(id);
+        return new ResponseEntity<>(num, HttpStatus.OK);
     }
 }

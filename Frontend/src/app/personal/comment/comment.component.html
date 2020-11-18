@@ -1,0 +1,41 @@
+<!--<div class="container" style="padding-top: 0px">-->
+<!--  <div class="be-comment-block">-->
+<form [formGroup]="commentForm" (ngSubmit)="addNewComment()">
+
+  <h2><strong>Response</strong></h2>
+  <editor apiKey="sitool8kf7z1dzkf6jozl4ep4fzmvm18x0cd24wafma4eus8"
+          [formControlName]="'body'" id="content" [init]="editorConfig"></editor>
+  <button type="submit" style="border: none;color: #03A9F4;background-color: Transparent;">
+    <mat-icon>send</mat-icon>
+  </button>
+</form>
+<h1 class="comments-title">Comments {{totalCmt}}</h1>
+<div *ngIf="lstCmt.length>0" class="comment-area">
+  <div class="be-comment" *ngFor="let cmt of lstCmt">
+    <div class="be-img-comment">
+      <a href="{{cmt.avatar}}">
+        <img src="{{cmt.avatar}}" alt="" class="be-ava-comment">
+      </a>
+    </div>
+    <div class="be-comment-content">
+
+				<span class="be-comment-name">
+					<a href="blog-detail-2.html">{{cmt.username}}</a>
+					</span>
+      <span class="be-comment-time">
+					<i class="fa fa-clock-o"></i>
+        {{cmt.lastUpdate}}
+				</span>
+
+      <p class="be-comment-text" [innerHTML]="cmt.content">
+
+      </p>
+    </div>
+  </div>
+  <mat-paginator [pageSizeOptions]="[2,4,6]" [pageSize]=pageSize [length]="totalCmt"
+                 (page)="getNextComment($event)">
+  </mat-paginator>
+</div>
+
+<!--  </div>-->
+<!--</div>-->

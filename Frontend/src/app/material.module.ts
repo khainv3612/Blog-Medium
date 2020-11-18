@@ -1,30 +1,14 @@
-import { NgModule } from '@angular/core'
-import { MatButtonModule } from '@angular/material/button'
-import { MatCardModule } from '@angular/material/card'
-import { MatExpansionModule } from '@angular/material/expansion'
-import { MatProgressBarModule } from '@angular/material/progress-bar'
-import { MatIconModule } from '@angular/material/icon'
-import { MatToolbarModule } from '@angular/material/toolbar'
-import { MatInputModule } from '@angular/material'
+import {NgModule} from '@angular/core';
+
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatButtonModule} from '@angular/material/button';
+// import {FormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+
 
 @NgModule({
-  imports: [
-    MatButtonModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatProgressBarModule,
-    MatIconModule,
-    MatInputModule,
-    MatToolbarModule
-  ],
-  exports: [
-    MatButtonModule,
-    MatCardModule,
-    MatExpansionModule,
-    MatProgressBarModule,
-    MatIconModule,
-    MatInputModule,
-    MatToolbarModule
-  ]
+  exports: [MatDialogModule, MatFormFieldModule, MatButtonModule, MatInputModule, MatDialogRef]
 })
-export class MaterialModule {}
+export class MaterialModule {
+}
