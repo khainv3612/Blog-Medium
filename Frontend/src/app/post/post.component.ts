@@ -9,6 +9,7 @@ import {AddPostComponent} from '../add-post/add-post.component';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CommentService} from '../service/CommentService';
 import {Comment} from '../model/comment';
+import {LocalStorageService} from 'ngx-webstorage';
 
 // @ts-ignore
 @Component({
@@ -22,9 +23,9 @@ export class PostComponent implements OnInit {
 
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute
-    , private postService: AddPostService, private  commentService: CommentService) {
+    , private postService: AddPostService, private  localStorage: LocalStorageService) {
     this.router.getCurrentNavigation().extras.state;
-
+    this.localStorage.clear('urlReturn');
   }
 
   ngOnInit() {

@@ -5,6 +5,8 @@ import {AuthServiceSecu} from '../auth-service-secu.service';
 import {Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
 import {SocialAuthService} from 'angularx-social-login';
+import {NotifierService} from 'angular-notifier';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-login',
@@ -16,8 +18,10 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginPayload: LoginPayload;
   urlLoginGoogle = environment.URL_API_LOGIN_SOCIAL + 'signin/google';
+  urlReturn = '';
 
-  constructor(private authService: AuthServiceSecu, private router: Router, private authService1: SocialAuthService) {
+  constructor(private authService: AuthServiceSecu, private router: Router, private authService1: SocialAuthService
+              , private localStoraqeService: LocalStorageService) {
     this.loginForm = new FormGroup({
       username: new FormControl(),
       password: new FormControl()
@@ -26,6 +30,10 @@ export class LoginComponent implements OnInit {
       username: '',
       password: ''
     };
+    this.urlReturn = this.localStoraqeService.retrieve('urlReturn');
+    if (null == this.urlReturn || this.urlReturn == '' || this.urlReturn.length == 0) {
+      this.urlReturn = '/home';
+    }
   }
 
   ngOnInit() {
@@ -42,7 +50,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginPayload).subscribe(data => {
       if (data) {
         console.log('login success');
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl(this.urlReturn);
       } else {
         console.log('Login failed');
       }

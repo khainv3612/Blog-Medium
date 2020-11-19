@@ -121,6 +121,7 @@ body{
 }
 
 .comment-area{
+  padding-top: 1%;
   /*height: 20%;*/
   /*overflow: scroll;*/
   /*white-space: nowrap;*/

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FacebookService, UIParams, UIResponse} from 'ngx-facebook';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-contact-bar',
@@ -8,7 +9,8 @@ import {FacebookService, UIParams, UIResponse} from 'ngx-facebook';
 })
 export class ContactBarComponent implements OnInit {
 
-  constructor( private fb: FacebookService) { }
+  constructor(private fb: FacebookService, private localStorageService: LocalStorageService) {
+  }
 
   ngOnInit(): void {
   }

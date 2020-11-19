@@ -2,12 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PostPayload} from './post-payload';
 import {AddPostService} from '../add-post.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {environment} from '../../environments/environment';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {delay, finalize} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {LocalStorageService} from 'ngx-webstorage';
+import {NotifierModule} from 'angular-notifier';
+import {NotifierService} from 'angular-notifier';
+import set = Reflect.set;
 
 @Component({
   selector: 'app-add-post',
@@ -21,12 +24,12 @@ export class AddPostComponent implements OnInit {
   isSaving = false;
   addPostForm: FormGroup;
   postPayload: PostPayload;
-  title = new FormControl('', [
-    Validators.required
-  ]);
-  body = new FormControl('', [
-    Validators.required
-  ]);
+  title = new FormControl('', {
+    validators: Validators.required,
+  });
+  body = new FormControl('', {
+    validators: Validators.required,
+  });
   imageUrl = '';
   checkImageNull = false;
   selectedImage = null;
@@ -69,10 +72,13 @@ export class AddPostComponent implements OnInit {
       };
     }
   };
+  notifier: NotifierService;
 
 
   constructor(private addpostService: AddPostService, private storage: AngularFireStorage,
-              private router: Router, private routerActive: ActivatedRoute, private localStoraqeService: LocalStorageService) {
+              private router: Router, private routerActive: ActivatedRoute, private localStoraqeService: LocalStorageService
+    , private notifierService: NotifierService) {
+    this.notifier = notifierService;
     this.router.getCurrentNavigation().extras.state;
     this.addPostForm = new FormGroup({
       title: this.title,
@@ -86,6 +92,12 @@ export class AddPostComponent implements OnInit {
       username: '',
       lastUpdate: ''
     };
+
+    router.events.subscribe((val) => {
+      // see also
+      console.log(val instanceof NavigationEnd);
+      console.log('redirect');
+    });
   }
 
   ngOnInit() {
@@ -114,30 +126,38 @@ export class AddPostComponent implements OnInit {
   }
 
   async addPost() {
-    this.isSaving = true;
     this.postPayload.content = this.addPostForm.get('body').value;
     this.postPayload.title = this.addPostForm.get('title').value;
+    if (!this.validate('title') || !this.validate('content') || !this.validateImage()) {
+      return;
+    }
+    this.isSaving = true;
     this.postPayload.username = this.localStoraqeService.retrieve('username');
     if (this.selectedImage != null) {
       await this.uploadFileImage();
     }
     this.postPayload.image = this.imageUrl;
-    // this.imageUrl = '';
+    this.imageUrl = '';
     if (this.action == 'add-post') {
       this.addpostService.addPost(this.postPayload).subscribe(data => {
-        this.router.navigateByUrl('/');
+        this.showNotification('success', 'Add success!');
+        this.isSaving = false;
+        // this.backHome();
       }, error => {
         this.addPost();
         console.log('Failure Response');
       });
     } else {
       this.addpostService.updatePost(this.postPayload).subscribe(data => {
-        this.router.navigateByUrl('/');
+        this.showNotification('success', 'Update success!');
+        this.isSaving = false;
+        // setTimeout(this.backHome, 1000);
       }, error => {
         this.addPost();
         console.log('Failure Response');
       });
     }
+
   }
 
   showPreviewImage(event: any) {
@@ -168,6 +188,47 @@ export class AddPostComponent implements OnInit {
         });
       })
     ).subscribe();
+  }
+
+  validate(element): boolean {
+    switch (element) {
+      case 'title': {
+        const title = this.addPostForm.get('title').value.toString();
+        if (null == title || title === '' || title.isEmpty) {
+          this.showNotification('error', 'Title not be null!');
+          return false;
+        }
+        break;
+      }
+      case 'content': {
+        const content = this.addPostForm.get('body').value;
+        if (null == content || content == '' || content.isEmpty) {
+          this.showNotification('error', 'Please write somethings!!');
+          return false;
+        }
+        break;
+      }
+    }
+    return true;
+  }
+
+  showNotification(type, message) {
+    this.notifier.show({
+      message: message,
+      type: type,
+    });
+  }
+
+  validateImage(): boolean {
+    if (null == this.selectedImage) {
+      this.showNotification('error', 'Please choose a image background!');
+      return false;
+    }
+    return true;
+  }
+
+  backHome() {
+    this.router.navigateByUrl('/');
   }
 }
 

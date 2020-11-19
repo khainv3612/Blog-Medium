@@ -17,9 +17,14 @@ import {Router} from '@angular/router';
 export class AuthServiceSecu {
   private url = environment.URL_API_AUTH;
   private urlLoginGoogle = environment.URL_API_LOGIN_SOCIAL + 'signin/google';
+  private urlReturn = '';
 
   constructor(private httpClient: HttpClient, private localStoraqeService: LocalStorageService
     , private authService: SocialAuthService, private router: Router) {
+    this.urlReturn = this.localStoraqeService.retrieve('urlReturn');
+    if (null == this.urlReturn || this.urlReturn == '' || this.urlReturn.length == 0) {
+      this.urlReturn = '/home';
+    }
   }
 
   register(registerPayload: RegisterPayload): Observable<any> {
@@ -71,7 +76,7 @@ export class AuthServiceSecu {
         this.localStoraqeService.store('authenticationToken', data.authorizationCode);
         this.localStoraqeService.store('username', data.name);
         this.localStoraqeService.store('role', result);
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl(this.urlReturn);
       }, error => {
         console.log(error);
         alert('ERROR! PLEASE TRY AGAIN!');
@@ -91,7 +96,7 @@ export class AuthServiceSecu {
         this.localStoraqeService.store('authenticationToken', data.authorizationCode);
         this.localStoraqeService.store('username', data.name);
         this.localStoraqeService.store('role', result);
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl(this.urlReturn);
       }, error => {
         console.log(error);
         alert('ERROR! PLEASE TRY AGAIN!');

@@ -1,12 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Comment} from '../../model/comment';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AddPostComponent} from '../../add-post/add-post.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AddPostService} from '../../add-post.service';
 import {CommentService} from '../../service/CommentService';
 import {AuthServiceSecu} from '../../auth/auth-service-secu.service';
 import {PageEvent} from '@angular/material/paginator';
+import {NotifierService} from 'angular-notifier';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
   selector: 'app-comment',
@@ -19,7 +21,10 @@ export class CommentComponent implements OnInit {
 
   commentForm: FormGroup;
   newComment: Comment;
-  body = new FormControl('');
+  body = new FormControl('', {
+      validators: Validators.required,
+    }
+  );
   editorConfig = {
     theme: 'modern',
     height: '90',
@@ -32,10 +37,18 @@ export class CommentComponent implements OnInit {
   };
   totalCmt = 0;
   pageSize = 3;
+  notifier: NotifierService;
+  isLoggin = false;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute
-    , private  commentService: CommentService, private authService: AuthServiceSecu) {
-
+    , private  commentService: CommentService, private authService: AuthServiceSecu
+    , private notifierService: NotifierService, private localStoraqeService: LocalStorageService) {
+    if (null != authService.getUsername() && authService.getUsername() != '') {
+      this.isLoggin = true;
+    } else {
+      this.isLoggin = false;
+    }
+    this.notifier = notifierService;
     this.commentForm = new FormGroup({
       body: this.body
     });
@@ -60,6 +73,9 @@ export class CommentComponent implements OnInit {
   }
 
   addNewComment() {
+    if (!this.validateComment()) {
+      return;
+    }
     const comment = this.commentForm.get('body').value;
     this.newComment.content = comment;
     this.newComment.username = this.authService.getUsername();
@@ -88,6 +104,28 @@ export class CommentComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }
+
+  showNotification(type, message) {
+    this.notifier.show({
+      message: message,
+      type: type,
+    });
+  }
+
+  validateComment(): boolean {
+    const comment = this.commentForm.get('body').value;
+    console.log(comment);
+    if (null == comment || comment.isEmpty || comment == '') {
+      this.showNotification('error', 'Please comment something!');
+      return false;
+    }
+    return true;
+  }
+
+  login() {
+    this.localStoraqeService.store('urlReturn', '/post');
+    this.router.navigateByUrl('/login');
   }
 
 }
