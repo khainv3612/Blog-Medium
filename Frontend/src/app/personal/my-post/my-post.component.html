@@ -1,32 +1,62 @@
-<div class="content">
-  <h1 *ngIf="myPosts.length==0" class="notifi-add-post">add new post!<a href="/admin/add-post">here!</a></h1>
-  <div class="container">
-    <div *ngFor="let post of myPosts">
-      <div class="blogpost" id="{{'post-'+post.id}}">
-        <h3><a (click)="viewPost(post)" class="blog-title">{{post.title}}</a></h3>
-        <hr>
-        <div>
-         <span class="meta-footer-thumb">
+
+<div class="container">
+  <notifier-container style="padding-top: 0px"></notifier-container>
+  <section class="featured-posts">
+    <div class="section-title">
+      <h2><span>{{titlePage}}</span></h2>
+    </div>
+    <div class="card-columns listfeaturedtag"
+         *ngFor="let post of myPosts">
+
+      <!-- begin post -->
+      <div class="card" id="{{'post-'+post.id}}">
+        <div class="row">
+          <div class="col-md-5 wrapthumbnail">
+            <a (click)="viewPost(post)">
+              <div class="thumbnail" style="background-image:url({{post.image}});">
+              </div>
+            </a>
+          </div>
+          <div class="col-md-7">
+            <div class="card-block">
+              <h2 class="card-title"><a style="cursor: pointer" (click)="viewPost(post)">{{post.title}}</a></h2>
+              <!--                <h4 class="card-text">{{post.content}}</h4>-->
+              <div class="text content-display">
+                <p class="card-text" [innerHTML]="post.content"></p>
+              </div>
+              <div class="metafooter">
+                <div class="wrapfooter">
+								<span class="meta-footer-thumb">
 								<a href="/"><img class="author-thumb"
                                  src="{{post.avatarAuthor}}"
                                  alt="Sal"></a>
 								</span>
-          <p>{{post.username}}</p>
+                  <span class="author-meta">
+								<span class="post-name"><a href="author.html">{{post.username}}</a></span><br/>
+								<span class="post-date">{{post.lastUpdate}}</span><span class="dot"></span><span
+                    class="post-read">6 min read</span>
+								</span>
+                  <span class="post-read-more" style="padding-left: 10px" *ngIf="typepost=='pending'">
+                  <a (click)="openDialog(post)" style="cursor: pointer" class="view"
+                     title="View"
+                     data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
+                    </span>
+                  <!--            <a (click)="publishPost(post.id)" style="cursor: pointer" class="active" title="Publish" data-toggle="tooltip"><mat-icon style="color: #00ff22">verified_user</mat-icon></a>-->
+                  <span class="post-read-more">
+                  <a (click)="deletePost(post.id)" style="cursor: pointer" class="delete" title="Delete"
+                     data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                  </span>
+                  <span class="post-read-more">
+                  <a (click)="editPost(post)" style="cursor: pointer" title="Edit"
+                     data-toggle="tooltip"><mat-icon>edit</mat-icon></a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!--        <section class="featured-posts">-->
-        <!--        <div style="padding-top: 50px">-->
-        <!--          <p [innerHTML]="post.content"></p>-->
-        <!--        </div>-->
-        <!--        </section>-->
-        <div>
-          <a type="button" (click)="viewPost(post)" class="read-more btn btn-default">Read More</a></div>
-        <hr>
-        <button type="button" class="btn btn-outline-primary btn-sm" (click)="editPost(post)">Edit</button>
-        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deletePost(post.id)">Delete</button>
-        <hr>
       </div>
-      <!--      <hr>-->
+      <!-- end post -->
     </div>
-  </div>
+  </section>
 </div>
-

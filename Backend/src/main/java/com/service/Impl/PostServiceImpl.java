@@ -6,10 +6,7 @@ import com.exception.PostNotFoundException;
 import com.model.Post;
 import com.model.Status;
 import com.repository.PostRepository;
-import com.service.AuthService;
-import com.service.IAccountService;
-import com.service.IMailService;
-import com.service.IPostService;
+import com.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -47,6 +44,8 @@ public class PostServiceImpl implements IPostService {
     private Environment environment;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private ICommentService commentService;
 
     @Autowired
     private IMailService mailService;
@@ -65,6 +64,7 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
+    @Transactional
     public boolean createPost(PostDto postDto) throws IOException {
         if (!postDto.getImage().startsWith("https://firebasestorage.googleapis.com/"))
             return false;
@@ -76,6 +76,7 @@ public class PostServiceImpl implements IPostService {
         }
         writeBlog(post, environment.getProperty("URL_POST_PENDING"));
         postRepository.save(post);
+        entityManager.flush();
         return true;
     }
 
@@ -228,6 +229,8 @@ public class PostServiceImpl implements IPostService {
             Query query = entityManager.createNamedQuery("Post.getUrlContentById");
             String content = query.setParameter("id", id).getResultList().get(0).toString();
             File file = new File(content);
+            if (getStatusById(id).getIdStatus().equals(sttPublished.getIdStatus()))
+                commentService.deleteAllByPostId(id);
             postRepository.deleteById(id);
             file.delete();
         } catch (Exception ex) {

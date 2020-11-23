@@ -24,4 +24,6 @@ public interface ICommentService {
     Comment getById(Long id);
 
     Integer countComment(Long idPost);
+
+    void deleteAllByPostId(Long idPost);
 }

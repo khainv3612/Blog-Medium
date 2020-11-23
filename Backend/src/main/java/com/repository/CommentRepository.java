@@ -13,4 +13,6 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, L
     Long getNextId();
 
     Integer countComment(Long idPost);
+
+    void deleteAllByPost_Id(Long idPost);
 }

@@ -9,15 +9,14 @@ import java.time.Instant;
 @Table(name = "COMMENT")
 @NamedQueries({
         @NamedQuery(name = "Comment.getNextId",
-                query = "SELECT MAX(id) FROM Comment"),
+                query = "SELECT MAX(c.id) FROM Comment c"),
         @NamedQuery(name = "Comment.countComment",
-
                 query = "select count (c.id) from Comment c where c.post.id=:idPost")
 })
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
     private Post post;
@@ -79,5 +78,12 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public Comment(Long id, Post post, @NotNull String content, @NotNull Instant lastUpdate) {
+        this.id = id;
+        this.post = post;
+        this.content = content;
+        this.lastUpdate = lastUpdate;
     }
 }

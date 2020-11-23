@@ -6,6 +6,9 @@ import {environment} from '../../environments/environment';
 import {saveAs} from 'file-saver';
 import {AuthServiceSecu} from '../auth/auth-service-secu.service';
 import {PostPayload} from '../add-post/post-payload';
+import {PreviewPostComponent} from '../personal/preview-post/preview-post.component';
+import {ActivatedRoute} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +16,7 @@ import {PostPayload} from '../add-post/post-payload';
 export class PostService {
   fileContent: string | ArrayBuffer = '';
 
-  constructor(private httpClient: HttpClient, private authService: AuthServiceSecu) {
+  constructor(private httpClient: HttpClient, private authService: AuthServiceSecu, public dialog: MatDialog) {
   }
 
   private url = environment.URL_API_POST;
@@ -47,5 +50,25 @@ export class PostService {
   countPost(request: string) {
     return this.httpClient.get<number>(this.url + 'count-post/' + request);
   }
+
+  openDialog(post: any): void {
+    const dialogRef = this.dialog.open(PreviewPostComponent, {
+        width: '80%',
+        data: post,
+        height: '70%',
+        // state: post
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
+
+    const dialogSubmitSubscription =
+      dialogRef.componentInstance.submitClicked.subscribe(result => {
+        dialogSubmitSubscription.unsubscribe();
+      });
+
+  }
+
 
 }

@@ -118,3 +118,11 @@ body {
 .form-login-1{
   padding-top: 10px;
 }
+
+.error-message {
+  color: red;
+  padding-left: 1px;
+  float: bottom;
+}
+
+

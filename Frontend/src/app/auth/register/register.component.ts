@@ -45,17 +45,18 @@ export class RegisterComponent implements OnInit {
   onSubmit() {
     this.validateForm();
 
-    // if (this.registerForm.valid) {
-    //   console.log('pass');
-    // } else {
-    //   console.log('error');
-    // }
-    // this.authService.register(this.registerPayload).subscribe(data => {
-    //   console.log('register succes');
-    //   this.router.navigateByUrl('/register-success');
-    // }, error => {
-    //   console.log('register failed');
-    // });
+    if (this.registerForm.valid) {
+      console.log('pass');
+    } else {
+      console.log('error');
+      return;
+    }
+    this.authService.register(this.registerPayload).subscribe(data => {
+      console.log('register succes');
+      this.router.navigateByUrl('/register-success');
+    }, error => {
+      console.log('register failed');
+    });
   }
 
 
@@ -68,8 +69,8 @@ export class RegisterComponent implements OnInit {
   }
 
   validateConfirmPass() {
-    const pass = document.getElementById('inputPassword').value;
-    const rePass = document.getElementById('inputConfirmPassword').value;
+    const pass = (<HTMLInputElement>document.getElementById('inputPassword')).value;
+    const rePass = (<HTMLInputElement>document.getElementById('inputConfirmPassword')).value;
     if ('' != pass && '' != rePass) {
       if (pass != rePass) {
         this.isMatchPass = false;

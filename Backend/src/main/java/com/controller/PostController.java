@@ -31,7 +31,7 @@ public class PostController {
         if (!postServiceImpl.createPost(postDto)) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        mailService.sendEmailPending(postDto);
+//        mailService.sendEmailPending(postDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 

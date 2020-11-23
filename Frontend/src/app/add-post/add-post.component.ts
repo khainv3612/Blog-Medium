@@ -93,11 +93,6 @@ export class AddPostComponent implements OnInit {
       lastUpdate: ''
     };
 
-    router.events.subscribe((val) => {
-      // see also
-      console.log(val instanceof NavigationEnd);
-      console.log('redirect');
-    });
   }
 
   ngOnInit() {
@@ -142,6 +137,8 @@ export class AddPostComponent implements OnInit {
       this.addpostService.addPost(this.postPayload).subscribe(data => {
         this.showNotification('success', 'Add success!');
         this.isSaving = false;
+        this.addPostForm.reset();
+        this.imageUrl = '';
         // this.backHome();
       }, error => {
         this.addPost();
@@ -151,6 +148,7 @@ export class AddPostComponent implements OnInit {
       this.addpostService.updatePost(this.postPayload).subscribe(data => {
         this.showNotification('success', 'Update success!');
         this.isSaving = false;
+        this.addPostForm.reset();
         // setTimeout(this.backHome, 1000);
       }, error => {
         this.addPost();

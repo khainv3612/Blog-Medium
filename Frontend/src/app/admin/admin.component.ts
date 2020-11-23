@@ -11,6 +11,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {auto} from '@popperjs/core';
 import {PreviewPostComponent} from '../personal/preview-post/preview-post.component';
 import {PageEvent} from '@angular/material/paginator';
+import {NotifierService} from 'angular-notifier';
+import {ValidationService} from '../service/ValidationService';
+import {SocialAuthService} from 'angularx-social-login';
 
 @Component({
   selector: 'app-admin',
@@ -23,9 +26,13 @@ export class AdminComponent implements OnInit {
   totalElements = 0;
   loading: boolean;
   pageSize = 3;
+  notifier: NotifierService;
+  validateService: ValidationService;
 
   constructor(private postService: PostService, private router: Router, private routerActive: ActivatedRoute, public dialog: MatDialog
-  ) {
+    , private notifierService: NotifierService, private validatesv: ValidationService) {
+    this.validateService = validatesv;
+    this.notifier = notifierService;
   }
 
   action = '';
@@ -82,11 +89,11 @@ export class AdminComponent implements OnInit {
 
   publishPost(id: number) {
     this.postService.publishPost(id).subscribe(data => {
-      alert('done');
+      this.showNotification('success', this.validateService.publish_success);
       this.countPost();
       document.getElementById('post-' + id.toString()).hidden = true;
     }, error => {
-      alert('unsuccess');
+      this.showNotification('error', this.validateService.delete_unsuccess);
     });
   }
 
@@ -95,30 +102,16 @@ export class AdminComponent implements OnInit {
       return;
     }
     this.postService.deletePost(id).subscribe(result => {
-      alert('done');
+      this.showNotification('success', this.validateService.delete_success);
       this.countPost();
       document.getElementById('post-' + id.toString()).hidden = true;
     }, error => {
-      alert('failed');
+      this.showNotification('error', this.validateService.delete_unsuccess);
     });
   }
 
-  openDialog(title: string, text: string, post: any): void {
-    const dialogRef = this.dialog.open(PreviewPostComponent, {
-        width: '80%',
-        data: post,
-        height: '70%',
-        // state: post
-      }
-    );
-
-    dialogRef.afterClosed().subscribe(result => {
-    });
-
-    const dialogSubmitSubscription =
-      dialogRef.componentInstance.submitClicked.subscribe(result => {
-        dialogSubmitSubscription.unsubscribe();
-      });
+  openDialog(post: any): void {
+    this.postService.openDialog(post);
 
   }
 
@@ -167,6 +160,13 @@ export class AdminComponent implements OnInit {
       this.totalElements = data;
     }, error => {
       console.log(error);
+    });
+  }
+
+  showNotification(type, message) {
+    this.notifier.show({
+      message: message,
+      type: type,
     });
   }
 }

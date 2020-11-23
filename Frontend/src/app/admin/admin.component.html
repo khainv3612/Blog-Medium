@@ -1,4 +1,4 @@
-
+<notifier-container style="padding-top: 0px"></notifier-container>
 <body>
 <div class="container-xl" *ngIf="action=='post-publish'">
   <div class="table-responsive">
@@ -43,7 +43,7 @@
           </td>
           <td>{{post.lastUpdate}}</td>
           <td>
-            <a (click)="openDialog(post.title,post.content,post)" style="cursor: pointer" class="view" title="View"
+            <a (click)="openDialog(post)" style="cursor: pointer" class="view" title="View"
                data-toggle="tooltip"><i class="material-icons">&#xE417;</i></a>
             <!--            <a (click)="publishPost(post.id)" style="cursor: pointer" class="active" title="Publish" data-toggle="tooltip"><mat-icon style="color: #00ff22">verified_user</mat-icon></a>-->
             <a (click)="deletePost(post.id)" style="cursor: pointer" class="delete" title="Delete"

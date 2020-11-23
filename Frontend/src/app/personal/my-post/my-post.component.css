@@ -1,3 +1,29 @@
 .notifi-add-post{
   text-align: center;
 }
+
+
+.image-display {
+  width: 500px;
+  height: 200px;
+}
+
+.content-display{
+  height: 80px;
+}
+.fa {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+#movetop span.fa {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600; }
+
+.fa-angle-up:before {
+  content: ""; }
+

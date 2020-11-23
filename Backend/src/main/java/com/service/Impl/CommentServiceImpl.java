@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -26,6 +28,8 @@ public class CommentServiceImpl implements ICommentService {
     private CommentRepository commentRepository;
     @Autowired
     private IAccountService accountService;
+    @Autowired
+    private EntityManager em;
 
     @Override
     public List<CommentDTO> getCommentByIdPost(Long idPost, int page, int size) {
@@ -46,7 +50,8 @@ public class CommentServiceImpl implements ICommentService {
         if (null != comment) {
             commentDTO.setAvatar(comment.getAuthor().getImage());
             commentDTO.setContent(comment.getContent());
-            commentDTO.setId(comment.getId());
+            if (null != comment.getId())
+                commentDTO.setId(comment.getId());
             commentDTO.setLastUpdate(convertLastUpdate(comment.getLastUpdate()));
             commentDTO.setIdPost(comment.getPost().getId());
             commentDTO.setUsername(comment.getAuthor().getUserName());
@@ -62,6 +67,7 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
+    @Transactional
     public CommentDTO addNewComment(CommentDTO commentDTO) {
         Comment comment = convertToComment(commentDTO);
         if (commentRepository.getNextId() != null) {
@@ -69,8 +75,10 @@ public class CommentServiceImpl implements ICommentService {
         } else {
             comment.setId(1L);
         }
+        Long idJustInsert = comment.getId();
         commentRepository.save(comment);
-        Comment comment1 = getById(comment.getId());
+        em.flush();
+        Comment comment1 = getById(idJustInsert);
         CommentDTO commentDTO1 = convertToDTO(comment1);
         return commentDTO1;
     }
@@ -94,7 +102,7 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public Comment getById(Long id) {
+    public synchronized Comment getById(Long id) {
         Comment comment = commentRepository.findById(id).get();
         return comment;
     }
@@ -103,5 +111,10 @@ public class CommentServiceImpl implements ICommentService {
     public Integer countComment(Long idPost) {
         Integer num = commentRepository.countComment(idPost);
         return num;
+    }
+
+    @Override
+    public void deleteAllByPostId(Long idPost) {
+        commentRepository.deleteAllByPost_Id(idPost);
     }
 }

@@ -127,7 +127,7 @@ a:focus, a:active {
   -o-transition: all 300ms ease 0s;
   -ms-transition: all 300ms ease 0s; }
 
-input, select, textarea {
+input, textarea {
   outline: none;
   appearance: unset !important;
   -moz-appearance: unset !important;
@@ -201,7 +201,22 @@ body {
   font-weight: 400;
   font-family: Poppins; }
 
-.container {
+/*.container {*/
+/*  width: 900px;*/
+/*  background: #fff;*/
+/*  margin: 0 auto;*/
+/*  box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);*/
+/*  -moz-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);*/
+/*  -webkit-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);*/
+/*  -o-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);*/
+/*  -ms-box-shadow: 0px 15px 16.83px 0.17px rgba(0, 0, 0, 0.05);*/
+/*  border-radius: 20px;*/
+/*  -moz-border-radius: 20px;*/
+/*  -webkit-border-radius: 20px;*/
+/*  -o-border-radius: 20px;*/
+/*  -ms-border-radius: 20px; }*/
+
+.container-account {
   width: 900px;
   background: #fff;
   margin: 0 auto;
@@ -314,7 +329,7 @@ figure {
 .register-form {
   width: 450px; }
 
-.form-group {
+.form-group-account {
   position: relative;
   margin-bottom: 5px;
   margin-top: 10px;
@@ -402,7 +417,7 @@ input[type=checkbox]:not(old):checked + label > span:before {
   display: inline-block;
   width: auto; }
 
-label {
+.label-account {
   position: absolute;
   left: 0;
   top: 50%;
@@ -593,6 +608,7 @@ label.valid {
 
   .social-label {
     margin-right: 0px;
-    margin-bottom: 10px; } }
+    margin-bottom: 10px; }
+}
 
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=style-account.css.map */

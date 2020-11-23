@@ -121,7 +121,7 @@ const customNotifierOptions: NotifierOptions = {
       {path: 'admin/manage/:action', component: AdminComponent, canActivate: [AuthGuard]},
       {path: 'post', component: PostComponent},
       {path: 'login', component: LoginComponent},
-      {path: 'register-success', component: RegisterSuccessComponent},
+      {path: 'register-success', component: LoginComponent},
       {path: 'home', component: HomeComponent},
       {path: 'admin/:action', component: AddPostComponent, canActivate: [AuthGuard]},
       {path: 'mypost/:type-post', component: MyPostComponent, canActivate: [AuthGuard]},

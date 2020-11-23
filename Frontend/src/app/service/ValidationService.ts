@@ -10,6 +10,12 @@ export class ValidationService {
   public passWordFormat: string = 'Password between 8 to 15 characters, at least one lowercase letter, one uppercase letter, one numeric digit, and one special character';
   public passNotMatch: string = 'Repassword is not matched';
   public repassErr: string = 'Repassword is not null';
+  public usernameNull: string = 'Username cannot be empty';
+  public passwordNull: string = 'Password cannot be empty';
+  public delete_success: string = 'Delete success!';
+  public delete_unsuccess: string = 'Something Error!';
+  public publish_success: string = 'Publish post success!';
+  public publish_unsuccess: string = 'Something Error!';
 
   static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
     const config = {
