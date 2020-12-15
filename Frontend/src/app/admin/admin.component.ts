@@ -75,16 +75,16 @@ export class AdminComponent implements OnInit {
     const postView = {
       'id': post.idPending,
       'content': post.content,
-      'title': post.userCreate,
+      'title': post.title,
       'image': post.image,
       'username': post.userCreate,
       'lastUpdate': post.lastUpdate
     };
-    this.router.navigateByUrl('/post', {state: postView});
+    this.postService.openDialog(postView);
   }
 
   viewPostPublish(post: PostPayload) {
-    this.router.navigateByUrl('/post', {state: post});
+    this.postService.openDialog(post);
   }
 
   publishPost(id: number) {
@@ -110,8 +110,16 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  openDialog(post: any): void {
-    this.postService.openDialog(post);
+  openDialog(post: PostPending): void {
+    const postView = {
+      'id': post.idPending,
+      'content': post.content,
+      'title': post.title,
+      'image': post.image,
+      'username': post.userCreate,
+      'lastUpdate': post.lastUpdate
+    };
+    this.postService.openDialog(postView);
 
   }
 
@@ -120,7 +128,6 @@ export class AdminComponent implements OnInit {
     this.postService.getAllPostPending(request)
       .subscribe(data => {
         this.postsPending = data;
-        this.totalElements = 2;
         this.loading = false;
       }, error => {
         this.loading = false;

@@ -46,6 +46,10 @@ import {PickerModule} from '@ctrl/ngx-emoji-mart';
 import {NgxEmojModule} from 'ngx-emoj';
 import {CommentComponent} from './personal/comment/comment.component';
 import {NotifierModule, NotifierOptions} from 'angular-notifier';
+import {ProfileComponent} from './personal/profile/profile.component';
+import {allIcons} from 'angular-feather/icons';
+import {FeatherModule} from 'angular-feather';
+import {LazyImageModule} from 'ng-lazy-image';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -107,6 +111,7 @@ const customNotifierOptions: NotifierOptions = {
     MyPostComponent,
     PreviewPostComponent,
     CommentComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -125,6 +130,7 @@ const customNotifierOptions: NotifierOptions = {
       {path: 'home', component: HomeComponent},
       {path: 'admin/:action', component: AddPostComponent, canActivate: [AuthGuard]},
       {path: 'mypost/:type-post', component: MyPostComponent, canActivate: [AuthGuard]},
+      {path: 'profile', component: ProfileComponent},
     ]),
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -143,7 +149,9 @@ const customNotifierOptions: NotifierOptions = {
     MatIconModule,
     PickerModule,
     NgxEmojModule,
-    NotifierModule.withConfig(customNotifierOptions)
+    NotifierModule.withConfig(customNotifierOptions),
+    FeatherModule.pick(allIcons),
+    LazyImageModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpClientInterceptor, multi: true},
     {

@@ -16,7 +16,8 @@
         <a href="/admin/add-post" class="logout nav-link ml-auto">Add Post</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPending" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPending" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
           Pending
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownPending">
@@ -26,7 +27,8 @@
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPublished" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPublished" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
           Published
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownPublished">
@@ -36,7 +38,8 @@
         </div>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMypost" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMypost" role="button" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">
           My Post
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownPublished">
@@ -55,5 +58,12 @@
       <span class="search-icon"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path
         d="M20.067 18.933l-4.157-4.157a6 6 0 1 0-.884.884l4.157 4.157a.624.624 0 1 0 .884-.884zM6.5 11c0-2.62 2.13-4.75 4.75-4.75S16 8.38 16 11s-2.13 4.75-4.75 4.75S6.5 13.62 6.5 11z"></path></svg></span>
     </form>
+    <!--    <li>-->
+    <span class="meta-footer-thumb">
+        <a (click)="redirectDetailPage()" class="cursor-pointer"><img class="author-thumb"
+                                                                      src="{{avatar}}"
+                                                                      alt="Sal"></a>
+          </span>
+    <!--    </li>-->
   </div>
 </nav>

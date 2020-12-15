@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AuthServiceSecu} from '../../auth/auth-service-secu.service';
 import {NotifierService} from 'angular-notifier';
 import {ValidationService} from '../../service/ValidationService';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-my-post',
@@ -19,32 +20,45 @@ export class MyPostComponent implements OnInit {
   username = '';
   titlePage = '';
   notifier: NotifierService;
+  pageSize = 3;
+  page = 0;
+  request: any;
+  isLoading = false;
+  loadedAll = false;
+  isFirstLoad = true;
 
   constructor(private httpClient: HttpClient, private postService: PostService
     , private routeractive: ActivatedRoute, private router: Router, private authService: AuthServiceSecu
     , private notifierService: NotifierService, private validatesv: ValidationService) {
     this.notifier = notifierService;
+    this.username = this.authService.getUsername();
+    this.request = {
+      username: this.username,
+      page: this.page,
+      size: this.pageSize
+    };
   }
 
   ngOnInit(): void {
-    this.username = this.authService.getUsername();
     this.routeractive.params.subscribe(params => {
       this.typepost = params['type-post'];
     });
     switch (this.typepost) {
       case 'published':
-        this.postService.getAllMyPostPublished(this.username).subscribe(data => {
+        this.postService.getAllMyPostPublished(this.request).subscribe(data => {
           this.myPosts = data;
         });
         this.titlePage = 'Published';
         break;
       case 'pending':
-        this.postService.getAllMyPostPending(this.username).subscribe(data => {
+        this.postService.getAllMyPostPending(this.request).subscribe(data => {
           this.myPosts = data;
         });
         this.titlePage = 'Pending';
         break;
     }
+
+    this.handleScroll();
   }
 
   viewPost(post: PostPayload) {
@@ -88,4 +102,53 @@ export class MyPostComponent implements OnInit {
       type: type,
     });
   }
+
+
+  nextPage() {
+    this.request.page++;
+    this.request.size = 1;
+    switch (this.typepost) {
+      case 'pending': {
+        this.postService.getAllMyPostPending(this.request).subscribe(res => {
+          if (res.length) {
+            this.myPosts.push(...res);
+          } else {
+            this.loadedAll = true;
+          }
+        });
+        break;
+      }
+      case 'published': {
+        this.postService.getAllMyPostPublished(this.request).subscribe(res => {
+          if (res.length) {
+            this.myPosts.push(...res);
+          } else {
+            this.loadedAll = true;
+          }
+        });
+        break;
+      }
+    }
+  }
+
+  handleScroll(): void {
+
+    window.onscroll = () => this.detectBottom();
+  }
+
+  detectBottom(): void {
+    console.log(window.pageYOffset);
+    const el = document.getElementById('area-content');
+    //   console.log(.getBoundingClientRect().top;
+    // )
+    //   ;
+    if ((window.innerHeight + window.scrollY) >= el.offsetHeight - el.getBoundingClientRect().top) {
+      if (!this.loadedAll) {
+        setTimeout(() => {
+          this.nextPage();
+        }, 400);
+      }
+    }
+  }
+
 }

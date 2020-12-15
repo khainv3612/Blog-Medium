@@ -9,6 +9,7 @@ import {AuthServiceSecu} from '../../auth/auth-service-secu.service';
 import {PageEvent} from '@angular/material/paginator';
 import {NotifierService} from 'angular-notifier';
 import {LocalStorageService} from 'ngx-webstorage';
+import {UserDetailService} from '../../service/UserDetailService';
 
 @Component({
   selector: 'app-comment',
@@ -42,7 +43,7 @@ export class CommentComponent implements OnInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute
     , private  commentService: CommentService, private authService: AuthServiceSecu
-    , private notifierService: NotifierService, private localStoraqeService: LocalStorageService) {
+    , private notifierService: NotifierService, private localStoraqeService: LocalStorageService, private userService: UserDetailService) {
     if (null != authService.getUsername() && authService.getUsername() != '') {
       this.isLoggin = true;
     } else {
@@ -64,13 +65,6 @@ export class CommentComponent implements OnInit {
     this.countComment();
   }
 
-  countComment() {
-    this.commentService.countComment(this.idPost).subscribe(result => {
-      this.totalCmt = result;
-    }, error => {
-      console.log(error);
-    });
-  }
 
   addNewComment() {
     if (!this.validateComment()) {
@@ -89,6 +83,14 @@ export class CommentComponent implements OnInit {
       alert('FAIL ADD NEW COMMENT');
     });
     this.commentForm.reset();
+  }
+
+  countComment() {
+    this.commentService.countComment(this.idPost).subscribe(result => {
+      this.totalCmt = result;
+    }, error => {
+      console.log(error);
+    });
   }
 
   getNextComment(event: PageEvent) {
@@ -126,6 +128,10 @@ export class CommentComponent implements OnInit {
   login() {
     this.localStoraqeService.store('urlReturn', '/post');
     this.router.navigateByUrl('/login');
+  }
+
+  redirectDetailPage(comment: string) {
+    this.userService.redirectDetailPage(comment);
   }
 
 }

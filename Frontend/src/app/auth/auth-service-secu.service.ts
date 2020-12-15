@@ -10,6 +10,7 @@ import {environment} from '../../environments/environment';
 import {SocialAuthService} from 'angularx-social-login';
 import {FacebookLoginProvider, GoogleLoginProvider} from 'angularx-social-login';
 import {Router} from '@angular/router';
+import {AccountDetails} from '../model/AccountDetails';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,10 @@ export class AuthServiceSecu {
   private urlLoginGoogle = environment.URL_API_LOGIN_SOCIAL + 'signin/google';
   private urlReturn = '';
 
-  constructor(private httpClient: HttpClient, private localStoraqeService: LocalStorageService
+
+  constructor(private httpClient: HttpClient
     , private authService: SocialAuthService, private router: Router) {
-    this.urlReturn = this.localStoraqeService.retrieve('urlReturn');
+    this.urlReturn = sessionStorage.getItem('urlReturn');
     if (null == this.urlReturn || this.urlReturn == '' || this.urlReturn.length == 0) {
       this.urlReturn = '/home';
     }
@@ -33,24 +35,28 @@ export class AuthServiceSecu {
 
   login(loginPayload: LoginPayload): Observable<boolean> {
     return this.httpClient.post<LoginAutResponse>(this.url + 'login', loginPayload).pipe(map(data => {
-      console.log(data);
-      this.localStoraqeService.store('authenticationToken', data.authenticationToken);
-      this.localStoraqeService.store('username', data.username);
-      this.localStoraqeService.store('role', data.role);
+      sessionStorage.setItem('authenticationToken', data.authenticationToken);
+      sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('role', data.role);
+      let avatar = environment.URL_AVATAR_DEFAULT;
+      if (data.avatar != '') {
+        avatar = data.avatar;
+      }
+      sessionStorage.setItem('avatar', avatar);
       return true;
     }));
   }
 
   isAuthenticated(): boolean {
-    return this.localStoraqeService.retrieve('username') != null;
+    return sessionStorage.getItem('username') != null;
   }
 
   getUsername() {
-    return this.localStoraqeService.retrieve('username');
+    return sessionStorage.getItem('username');
   }
 
   getRole(): string {
-    let role = this.localStoraqeService.retrieve('role');
+    let role = sessionStorage.getItem('role');
     if (role == null) {
       role = 'anonymous';
     }
@@ -59,9 +65,10 @@ export class AuthServiceSecu {
 
 
   logout() {
-    this.localStoraqeService.clear('authenticationToken');
-    this.localStoraqeService.clear('username');
-    this.localStoraqeService.clear('role');
+    sessionStorage.removeItem('authenticationToken');
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('avatar');
     this.authService.signOut();
   }
 
@@ -73,9 +80,10 @@ export class AuthServiceSecu {
         image: data.photoUrl
       };
       this.httpClient.post<string>(this.urlLoginGoogle, account, {responseType: 'text' as 'json'}).subscribe(result => {
-        this.localStoraqeService.store('authenticationToken', data.authorizationCode);
-        this.localStoraqeService.store('username', data.name);
-        this.localStoraqeService.store('role', result);
+        sessionStorage.setItem('authenticationToken', data.authorizationCode);
+        sessionStorage.setItem('username', data.name);
+        sessionStorage.setItem('role', result);
+        sessionStorage.setItem('avatar', data.photoUrl);
         this.router.navigateByUrl(this.urlReturn);
       }, error => {
         console.log(error);
@@ -93,9 +101,10 @@ export class AuthServiceSecu {
         image: data.photoUrl
       };
       this.httpClient.post<string>(this.urlLoginGoogle, account, {responseType: 'text' as 'json'}).subscribe(result => {
-        this.localStoraqeService.store('authenticationToken', data.authorizationCode);
-        this.localStoraqeService.store('username', data.name);
-        this.localStoraqeService.store('role', result);
+        sessionStorage.setItem('authenticationToken', data.authorizationCode);
+        sessionStorage.setItem('username', data.name);
+        sessionStorage.setItem('role', result);
+        sessionStorage.setItem('avatar', data.photoUrl);
         this.router.navigateByUrl(this.urlReturn);
       }, error => {
         console.log(error);
@@ -104,5 +113,11 @@ export class AuthServiceSecu {
     });
   }
 
+  getAvatar() {
+    return sessionStorage.getItem('avatar');
+  }
 
+  getUserDetails(username: string): Observable<AccountDetails> {
+    return this.httpClient.post<AccountDetails>(this.url + 'profile', username);
+  }
 }

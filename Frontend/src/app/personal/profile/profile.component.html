@@ -1,0 +1,163 @@
+<!-- Main Content Header -->
+<!--<div class="main-content-header">-->
+<!--  <h1>Profile</h1>-->
+<!--  <ol class="breadcrumb">-->
+<!--    <li class="breadcrumb-item">-->
+<!--      <a routerLink="/dashboard-sales">Dashboard</a>-->
+<!--    </li>-->
+<!--    <li class="breadcrumb-item active">-->
+<!--      <span class="active">Profile</span>-->
+<!--    </li>-->
+<!--  </ol>-->
+<!--</div>-->
+<!-- End Main Content Header -->
+
+<!-- Profile -->
+<div class="row">
+  <div class="col-lg-12">
+    <div class="profile-header mb-30">
+      <img src="{{user.image}}" alt="{{username}}" class="rounded-circle">
+      <h3 class="name mt-3">{{username}}</h3>
+      <p>{{user.description}}</p>
+      <div class="profile-stats">
+        <a href="#">
+          <strong>{{user.lstPost.length}}</strong>
+          Posts
+        </a>
+        <a href="#">
+          <strong>963</strong>
+          Following
+        </a>
+        <a href="#">
+          <strong>576</strong>
+          Followers
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <div class="profile-left-content">
+      <div class="card mb-30">
+        <div class="card-body">
+          <div class="card-header">
+            <h5 class="card-title">Info</h5>
+          </div>
+
+          <ul class="info">
+            <li>
+              <i-feather name="map-pin"></i-feather>
+              Location: {{user.address}}
+            </li>
+            <li>
+              <i-feather name="calendar"></i-feather>
+              Birthday: Born {{user.birthday}}
+            </li>
+            <li>
+              <i-feather name="phone"></i-feather>
+              Phone: {{user.phone}}
+            </li>
+            <li>
+              <i-feather name="mail"></i-feather>
+              Email: {{user.email}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="profile-middle-content mb-30" *ngFor="let post of user.lstPost" >
+      <div class="post-card">
+        <div class="media">
+          <img src="{{user.image}}" alt="User" class="mr-3 rounded-circle" width="50" height="50">
+          <div class="media-body">
+            <h5><a href="#">{{post.title}}</a></h5>
+            <p [innerHTML]="post.content"></p>
+            <div class="feed-back mt-3">
+              <a href="#">
+                <i-feather name="thumbs-up"></i-feather>
+                897
+              </a>
+              <a href="#">
+                <i-feather name="share-2"></i-feather>
+                897
+              </a>
+              <a (click)="showHideCommentArea(post.id)" class="cursor-pointer" style="float: right">
+                <i-feather name="message-square"></i-feather>
+                <!--                {{post.}}-->
+              </a>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="pt-12" id="comment-{{post.id}}" style="display: none">
+          <app-comment id="{{post.id}}" [lstCmt]="lstCmt" [idPost]="post.id"></app-comment>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-3">
+    <div class="profile-right-content">
+      <div class="card mb-30">
+        <div class="card-body">
+          <div class="card-header">
+            <h5 class="card-title">Connect</h5>
+          </div>
+
+          <div class="connecting-list">
+            <div class="media">
+              <a href="#">
+                <img src="assets/img/user/1.jpg" alt="User" class="mr-2 rounded-circle" width="35" height="35">
+              </a>
+              <div class="media-body">
+                <h5><a href="#">Amber Gibs</a></h5>
+                <button type="button" class="btn btn-outline-primary rounded">Follow</button>
+              </div>
+            </div>
+            <div class="media">
+              <a href="#">
+                <img src="assets/img/user/2.jpg" alt="User" class="mr-2 rounded-circle" width="35" height="35">
+              </a>
+              <div class="media-body">
+                <h5><a href="#">Carl Roland</a></h5>
+                <button type="button" class="btn btn-outline-primary rounded">Follow</button>
+              </div>
+            </div>
+            <div class="media">
+              <a href="#">
+                <img src="assets/img/user/3.jpg" alt="User" class="mr-2 rounded-circle" width="35" height="35">
+              </a>
+              <div class="media-body">
+                <h5><a href="#">Paul Wilson</a></h5>
+                <button type="button" class="btn btn-outline-primary rounded">Follow</button>
+              </div>
+            </div>
+            <div class="media">
+              <a href="#">
+                <img src="assets/img/user/4.jpg" alt="User" class="mr-2 rounded-circle" width="35" height="35">
+              </a>
+              <div class="media-body">
+                <h5><a href="#">Alice Jenkins</a></h5>
+                <button type="button" class="btn btn-outline-primary rounded">Follow</button>
+              </div>
+            </div>
+            <div class="media">
+              <a href="#">
+                <img src="assets/img/user/5.jpg" alt="User" class="mr-2 rounded-circle" width="35" height="35">
+              </a>
+              <div class="media-body">
+                <h5><a href="#">Lauren Cox</a></h5>
+                <button type="button" class="btn btn-outline-primary rounded">Follow</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Profile -->

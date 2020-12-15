@@ -39,12 +39,12 @@ export class PostService {
     return this.httpClient.post(this.url + 'delete-post', id);
   }
 
-  getAllMyPostPublished(username): Observable<PostPayload[]> {
-    return this.httpClient.post<PostPayload[]>(this.url + 'my-post/published', username);
+  getAllMyPostPublished(request): Observable<PostPayload[]> {
+    return this.httpClient.post<PostPayload[]>(this.url + 'my-post/published', request);
   }
 
-  getAllMyPostPending(username): Observable<PostPayload[]> {
-    return this.httpClient.post<PostPayload[]>(this.url + 'my-post/pending', username);
+  getAllMyPostPending(request: any): Observable<PostPayload[]> {
+    return this.httpClient.post<PostPayload[]>(this.url + 'my-post/pending', request);
   }
 
   countPost(request: string) {

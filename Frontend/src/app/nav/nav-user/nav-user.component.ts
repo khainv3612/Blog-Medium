@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthServiceSecu} from '../../auth/auth-service-secu.service';
+import {UserDetailService} from '../../service/UserDetailService';
 
 @Component({
   selector: 'app-nav-user',
@@ -8,7 +9,10 @@ import {AuthServiceSecu} from '../../auth/auth-service-secu.service';
 })
 export class NavUserComponent implements OnInit {
 
-  constructor(private authService: AuthServiceSecu) {
+  @Input()
+  avatar: string;
+
+  constructor(private authService: AuthServiceSecu, private userService: UserDetailService) {
   }
 
   ngOnInit() {
@@ -16,5 +20,9 @@ export class NavUserComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  redirectDetailPage() {
+    this.userService.redirectDetailPage(sessionStorage.getItem('username'));
   }
 }

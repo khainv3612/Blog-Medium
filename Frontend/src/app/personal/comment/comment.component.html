@@ -5,7 +5,7 @@
 <form [formGroup]="commentForm" (ngSubmit)="addNewComment()"
       *ngIf="isLoggin">
   <editor required apiKey="sitool8kf7z1dzkf6jozl4ep4fzmvm18x0cd24wafma4eus8"
-          [formControlName]="'body'" id="content" [init]="editorConfig"></editor>
+          [formControlName]="'body'" [init]="editorConfig"></editor>
   <button type="submit" style="border: none;color: #03A9F4;background-color: Transparent;">
     <mat-icon>send</mat-icon>
   </button>
@@ -24,14 +24,14 @@
 <div *ngIf="lstCmt.length>0" class="comment-area">
   <div class="be-comment" *ngFor="let cmt of lstCmt">
     <div class="be-img-comment">
-      <a href="{{cmt.avatar}}">
-        <img src="{{cmt.avatar}}" alt="" class="be-ava-comment">
+      <a class="cursor-pointer" (click)="redirectDetailPage(cmt.username)">
+        <img src="{{cmt.avatar}}" alt="" class=" author-thumb">
       </a>
     </div>
     <div class="be-comment-content">
 
 				<span class="be-comment-name">
-					<a href="blog-detail-2.html">{{cmt.username}}</a>
+					<a class="cursor-pointer" (click)="redirectDetailPage(cmt.username)">{{cmt.username}}</a>
 					</span>
       <span class="be-comment-time">
 					<i class="fa fa-clock-o"></i>

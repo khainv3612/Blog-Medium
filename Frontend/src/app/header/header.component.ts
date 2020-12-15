@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthServiceSecu} from '../auth/auth-service-secu.service';
-import { createPopper } from '@popperjs/core';
+import {createPopper} from '@popperjs/core';
 
 @Component({
   selector: 'app-header',
@@ -8,8 +8,10 @@ import { createPopper } from '@popperjs/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  avatar: string = '';
 
   constructor(private authService: AuthServiceSecu) {
+    this.avatar = this.authService.getAvatar();
   }
 
   ngOnInit() {
