@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.dto.PagingDTO;
 import com.dto.PostDto;
 import com.dto.PostPendingDTO;
 import com.model.Post;
@@ -37,7 +38,7 @@ public class PostController {
 
     @GetMapping("/all")
     public ResponseEntity<List<PostDto>> showAllPosts() {
-        List<PostDto> list=postServiceImpl.showAllPosts();
+        List<PostDto> list = postServiceImpl.showAllPosts();
         mailService.sendMail(list.get(0).getContent());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -84,14 +85,14 @@ public class PostController {
     }
 
     @PostMapping("/my-post/published")
-    public ResponseEntity<List<PostDto>> getMyPostPublished(@RequestBody String username) {
-        List<PostDto> list = postServiceImpl.getMyPostPublished(username);
+    public ResponseEntity<List<PostDto>> getMyPostPublished(@RequestBody PagingDTO dto) {
+        List<PostDto> list = postServiceImpl.getMyPostPublished(dto.username, dto.page, dto.size);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping("/my-post/pending")
-    public ResponseEntity<List<PostDto>> getMyPostPending() {
-        List<PostDto> list = postServiceImpl.getAllMyPostPending();
+    public ResponseEntity<List<PostDto>> getMyPostPending(@RequestBody PagingDTO dto) {
+        List<PostDto> list = postServiceImpl.getAllMyPostPending(dto.username, dto.page, dto.size);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

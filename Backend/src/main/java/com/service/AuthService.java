@@ -10,6 +10,7 @@ import com.model.TypeAccount;
 import com.repository.UserRepository;
 import com.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,8 @@ public class AuthService {
     private TypeAccount typeFacebook;
     @Autowired
     private TypeAccount typeGithub;
+    @Autowired
+    private Environment environment;
 
     public void signup(RegisterRequest registerRequest) {
         Account account = new Account();
@@ -65,8 +68,12 @@ public class AuthService {
                         loginRequestNomal.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String authenticationToken = jwtProvider.generateToken(authenticate);
+        Account account = accountService.findByUsername(loginRequestNomal.getUsername());
+        String avatar = "";
+        if (null != account.getImage())
+            avatar = account.getImage();
         return new AuthenticationResponse(authenticationToken, loginRequestNomal.getUsername(),
-                accountService.findByUsername(loginRequestNomal.getUsername()).getRole().getRole());
+                account.getRole().getRole(), avatar);
     }
 
     public Optional<User> getCurrentUser() {
@@ -75,7 +82,7 @@ public class AuthService {
         return Optional.of(principal);
     }
 
-    synchronized public String                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      signupSocial(LoginSocialAbstactDTO dto) {
+    synchronized public String signupSocial(LoginSocialAbstactDTO dto) {
         String role = "";
         try {
             if (!accountService.checkEmailExist(dto.getEmail())) {

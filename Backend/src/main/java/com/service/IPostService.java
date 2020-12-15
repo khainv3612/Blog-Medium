@@ -19,6 +19,7 @@ public interface IPostService {
     Post findById(Long id);
 
     boolean createPost(PostDto postDto) throws IOException;
+
     boolean updatePost(PostDto postDto) throws IOException;
 
     PostDto readSinglePost(Long id);
@@ -27,7 +28,7 @@ public interface IPostService {
 
     Post mapFromDtoToPost(PostDto postDto, Status typePost);
 
-    void writeBlog(Post post,String typePost) throws IOException;
+    void writeBlog(Post post, String typePost) throws IOException;
 
     String readBlogContent(String urlPost);
 
@@ -45,11 +46,14 @@ public interface IPostService {
 
     boolean movieFilePublish(String nameFile, Long id) throws IOException;
 
-    List<PostDto> getMyPostPublished(String username);
-    List<PostDto> getAllMyPostPending();
+    List<PostDto> getMyPostPublished(String username, int page, int size);
+
+    List<PostDto> getAllMyPostPending(String username, int page, int size);
 
     Status getStatusById(Long id);
 
     Integer countPost(String postType);
+
+    List<PostDto> getPostByUsername(String username, int page, int size);
 
 }

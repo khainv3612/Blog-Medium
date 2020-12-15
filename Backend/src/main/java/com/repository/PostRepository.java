@@ -12,12 +12,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends PagingAndSortingRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByStatusEqualsOrderByIdDesc(Status status, Pageable pageable);
 
     Long getNextId();
 
     List<Post> getAllByAccountCreate_Id(Long id);
 
-    List<Post> getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(Long id,Status status);
+
+    Page<Post> getAllByAccountCreate_UserNameOrderByIdDesc(String username, Pageable pageable);
+
+    Page<Post> getAllByAccountCreate_UserNameAndStatusEqualsOrderByIdDesc(String username, Status status, Pageable pageable);
 }

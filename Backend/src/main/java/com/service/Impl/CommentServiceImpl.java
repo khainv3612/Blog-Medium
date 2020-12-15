@@ -9,6 +9,7 @@ import com.service.IPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Component("CommentService")
 public class CommentServiceImpl implements ICommentService {
 
     @Autowired
@@ -28,8 +30,6 @@ public class CommentServiceImpl implements ICommentService {
     private CommentRepository commentRepository;
     @Autowired
     private IAccountService accountService;
-    @Autowired
-    private EntityManager em;
 
     @Override
     public List<CommentDTO> getCommentByIdPost(Long idPost, int page, int size) {
@@ -67,17 +67,10 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public CommentDTO addNewComment(CommentDTO commentDTO) {
         Comment comment = convertToComment(commentDTO);
-        if (commentRepository.getNextId() != null) {
-            comment.setId(getNextId() + 1L);
-        } else {
-            comment.setId(1L);
-        }
-        Long idJustInsert = comment.getId();
-        commentRepository.save(comment);
-        em.flush();
+        Long idJustInsert = commentRepository.save(comment).getId();
         Comment comment1 = getById(idJustInsert);
         CommentDTO commentDTO1 = convertToDTO(comment1);
         return commentDTO1;

@@ -2,6 +2,7 @@ package com.config;
 
 import com.model.Status;
 import com.model.TypeAccount;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -24,37 +25,42 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public Status sttDelete(){
+    public Status sttDelete() {
         return new Status(-1L);
     }
 
     @Bean
-    public Status sttPending(){
+    public Status sttPending() {
         return new Status(0L);
     }
 
     @Bean
-    public Status sttPublished(){
+    public Status sttPublished() {
         return new Status(1L);
     }
 
     @Bean
-    public TypeAccount typeNomal(){
+    public TypeAccount typeNomal() {
         return new TypeAccount(1L);
     }
 
     @Bean
-    public TypeAccount typeGoogle(){
+    public TypeAccount typeGoogle() {
         return new TypeAccount(2L);
     }
 
     @Bean
-    public TypeAccount typeFacebook(){
+    public TypeAccount typeFacebook() {
         return new TypeAccount(3L);
     }
 
     @Bean
-    public TypeAccount typeGithub(){
+    public TypeAccount typeGithub() {
         return new TypeAccount(4L);
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

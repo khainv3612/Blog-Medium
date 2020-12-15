@@ -8,11 +8,13 @@ import com.model.Status;
 import com.repository.PostRepository;
 import com.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.util.*;
 import static java.util.stream.Collectors.toList;
 
 @Service
+@Component("PostService")
 public class PostServiceImpl implements IPostService {
 
     @Autowired
@@ -45,6 +48,7 @@ public class PostServiceImpl implements IPostService {
     @Autowired
     private EntityManager entityManager;
     @Autowired
+    @Qualifier("CommentService")
     private ICommentService commentService;
 
     @Autowired
@@ -262,16 +266,19 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public List<PostDto> getMyPostPublished(String username) {
-        List<Post> list =
-                postRepository.getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(accountServiceImpl.findByUsername(username).getId(), sttPublished);
+    public List<PostDto> getMyPostPublished(String username, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> list =
+                postRepository
+                        .getAllByAccountCreate_UserNameAndStatusEqualsOrderByIdDesc(username, sttPublished, pageable);
         return list.stream().map(this::mapFromPostToDto).collect(toList());
     }
 
     @Override
-    public List<PostDto> getAllMyPostPending() {
-        List<Post> list =
-                postRepository.getAllByAccountCreate_IdAndStatusEqualsOrderByIdDesc(accountServiceImpl.findByUsername(getCurrentUser().getUsername()).getId(), sttPending);
+    public List<PostDto> getAllMyPostPending(String username, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> list =
+                postRepository.getAllByAccountCreate_UserNameAndStatusEqualsOrderByIdDesc(username, sttPending, pageable);
         return list.stream().map(this::mapFromPostToDto).collect(toList());
     }
 
@@ -301,6 +308,21 @@ public class PostServiceImpl implements IPostService {
         int result = Integer.parseInt(query.getResultList().get(0).toString());
 
         return result;
+    }
+
+    @Override
+    public List<PostDto> getPostByUsername(String username, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<PostDto> list = new ArrayList<>();
+        try {
+            list = postRepository.getAllByAccountCreate_UserNameAndStatusEqualsOrderByIdDesc(username, sttPublished, pageable)
+                    .stream().map(this::mapFromPostToDto).collect(toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
+
     }
 
     public User getCurrentUser() {

@@ -4,6 +4,15 @@ public abstract class LoginSocialAbstactDTO {
     public String username;
     public String email;
     public String image;
+    public String avatar;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getUsername() {
         return username;

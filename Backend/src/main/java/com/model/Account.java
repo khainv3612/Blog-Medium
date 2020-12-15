@@ -1,14 +1,17 @@
 package com.model;
 
 import lombok.Builder;
+import lombok.Data;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "ACCOUNT")
+@Data
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +31,11 @@ public class Account implements Serializable {
     private TypeAccount typeAccount;
 
     private String image;
+
+    private String address;
+    private String phone;
+    private Date birthday;
+    private String description;
 
     public TypeAccount getTypeAccount() {
         return typeAccount;
