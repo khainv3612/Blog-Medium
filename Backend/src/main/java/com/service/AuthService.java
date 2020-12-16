@@ -86,6 +86,7 @@ public class AuthService {
         String role = "";
         try {
             if (!accountService.checkEmailExist(dto.getEmail())) {
+                role = roleUser.getRole();
                 Account account = new Account();
                 account.setUserName(dto.getUsername());
                 account.setEmail(dto.getEmail());
@@ -93,12 +94,13 @@ public class AuthService {
                 account.setImage(dto.getImage());
                 account.setRole(roleUser);
                 userRepository.save(account);
-                role = roleUser.getRole();
             }
             role = accountService.findByEmail(dto.getEmail()).getRole().getRole();
         } catch (Exception e) {
             e.getMessage();
+        } finally {
+            return role;
         }
-        return role;
+
     }
 }

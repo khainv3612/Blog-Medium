@@ -30,7 +30,7 @@ public class Account implements Serializable {
     @ManyToOne
     private TypeAccount typeAccount;
 
-    private String image;
+    private String image = "assets/img/avatar.jpeg";
 
     private String address;
     private String phone;

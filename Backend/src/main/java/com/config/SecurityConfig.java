@@ -36,12 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public Role roleUser() {
-        return new Role(1L);
+        return new Role(1L,"ROLE_USER");
     }
 
     @Bean
     public Role roleAdmin() {
-        return new Role(2L);
+        return new Role(2L,"ROLE_ADMIN");
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

@@ -66,8 +66,10 @@ public class AccountServiceImpl implements IAccountService {
     public UserDetailDTO getUserDetails(String username) {
         Account account = userRepository.findByUserName(username).get();
         UserDetailDTO detailDTO = modelMapper.map(account, UserDetailDTO.class);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        detailDTO.setBirthday(dateFormat.format(account.getBirthday()));
+        if (null != account.getBirthday()) {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            detailDTO.setBirthday(dateFormat.format(account.getBirthday()));
+        }
         return detailDTO;
     }
 

@@ -27,3 +27,6 @@ mvnw.cmd
 .mvn
 mvnw
 *.iml
+
+/src/main/resources/PostPending/
+/src/main/resources/PostPublished/
