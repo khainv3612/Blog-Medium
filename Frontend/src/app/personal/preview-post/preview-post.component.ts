@@ -25,9 +25,9 @@ export class PreviewPostComponent implements OnInit {
     // this.post = history.state;
     this.post = this.data;
     if (this.post.title != null) {
-      localStorage.setItem('post-detail', JSON.stringify(this.post));
+      sessionStorage.setItem('post-detail', JSON.stringify(this.post));
     } else {
-      this.post = JSON.parse(localStorage.getItem('post-detail'));
+      this.post = JSON.parse(sessionStorage.getItem('post-detail'));
     }
     this.dialogTitle = this.data.title;
     this.dialogText = this.data.content;

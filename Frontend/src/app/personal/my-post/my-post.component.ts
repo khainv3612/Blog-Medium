@@ -105,6 +105,9 @@ export class MyPostComponent implements OnInit {
 
 
   nextPage() {
+    if (this.loadedAll) {
+      return;
+    }
     this.request.page++;
     this.request.size = 1;
     switch (this.typepost) {
@@ -137,12 +140,8 @@ export class MyPostComponent implements OnInit {
   }
 
   detectBottom(): void {
-    console.log(window.pageYOffset);
     const el = document.getElementById('area-content');
-    //   console.log(.getBoundingClientRect().top;
-    // )
-    //   ;
-    if ((window.innerHeight + window.scrollY) >= el.offsetHeight - el.getBoundingClientRect().top) {
+    if (window.innerHeight >= Math.floor(el.clientHeight + el.getBoundingClientRect().top)) {
       if (!this.loadedAll) {
         setTimeout(() => {
           this.nextPage();

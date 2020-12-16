@@ -23,9 +23,11 @@ export class LoginComponent implements OnInit {
   isValidUsername: boolean = true;
   isValidPass: boolean = true;
   validateService: ValidationService;
+  notifier: NotifierService;
 
   constructor(private authService: AuthServiceSecu, private router: Router, private authService1: SocialAuthService
-    , private localStoraqeService: LocalStorageService, private validate: ValidationService) {
+    , private localStoraqeService: LocalStorageService, private notifierService: NotifierService,
+              private validate: ValidationService) {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
@@ -39,6 +41,7 @@ export class LoginComponent implements OnInit {
       this.urlReturn = '/home';
     }
     this.validateService = validate;
+    this.notifier = notifierService;
   }
 
   ngOnInit() {
@@ -60,9 +63,10 @@ export class LoginComponent implements OnInit {
       if (data) {
         console.log('login success');
         this.router.navigateByUrl(this.urlReturn);
-      } else {
-        console.log('Login failed');
       }
+    }, error => {
+      console.log('Login failed');
+      this.showNotification('error', 'Something went wrong, please try again!');
     });
   }
 
@@ -86,5 +90,12 @@ export class LoginComponent implements OnInit {
     } else {
       this.isValidPass = true;
     }
+  }
+
+  showNotification(type, message) {
+    this.notifier.show({
+      message: message,
+      type: type,
+    });
   }
 }

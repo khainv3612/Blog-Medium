@@ -22,4 +22,8 @@ export class UserDetailService {
   redirectDetailPage(username: string) {
     this.router.navigateByUrl('/profile', {state: [username]});
   }
+
+  redirectEditProfilePage(username: string) {
+    this.router.navigateByUrl('/edit-profile', {state: [username]});
+  }
 }

@@ -29,6 +29,7 @@ export const environment = {
   URL_API_AUTH: 'http://localhost:8080/api/auth/',
   URL_API_USER_DETAIL: 'http://localhost:8080/api/user-details/',
   URL_SAVE_IMAGE_BLOG_FIREBASE: 'image-blog/',
+  URL_SAVE_AVATAR_FIREBASE: 'avatar/',
   URL_API_LOGIN_SOCIAL: 'http://localhost:8080/login-social/',
   URL_API_COMMENT: 'http://localhost:8080/api/comment/',
   URL_AVATAR_DEFAULT: 'assets/img/avatar.jpeg'

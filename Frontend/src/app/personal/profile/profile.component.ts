@@ -16,28 +16,38 @@ export class ProfileComponent implements OnInit {
   user: AccountDetails;
   username = '';
   lstCmt: Comment[];
+  request: any;
+  pageSize = 3;
+  page = 0;
+  isLoading = false;
+  loadedAll = false;
+  isFirstLoad = true;
 
   constructor(private postService: PostService, private userService: UserDetailService, private routerActive: ActivatedRoute
     , private router: Router, private authService: AuthServiceSecu) {
     this.router.getCurrentNavigation().extras.state;
     this.username = history.state[0];
-    console.log(this.username);
-  }
-
-  ngOnInit(): void {
     this.checkIsLoginToShowData();
+    this.request = {
+      username: this.username,
+      page: this.page,
+      size: this.pageSize
+    };
     this.getUserDetail().subscribe(data => {
       this.user = data[0];
       this.user.lstPost = data[1];
-      console.log(this.user);
     }, error => {
       console.log(error);
     });
   }
 
+  ngOnInit(): void {
+    this.handleScroll();
+  }
+
   getUserDetail(): Observable<any> {
     const details = this.userService.getUserDeatil(this.username);
-    const postOwner = this.postService.getAllMyPostPublished(this.username);
+    const postOwner = this.postService.getAllMyPostPublished(this.request);
     return forkJoin([details, postOwner]);
   }
 
@@ -57,6 +67,36 @@ export class ProfileComponent implements OnInit {
       x.style.display = 'block';
     } else {
       x.style.display = 'none';
+    }
+  }
+
+  getNextPost() {
+    if (this.loadedAll) {
+      return;
+    }
+    this.request.page++;
+    this.request.size = 1;
+    this.postService.getAllMyPostPublished(this.request).subscribe(res => {
+      if (res.length) {
+        this.user.lstPost.push(...res);
+      } else {
+        this.loadedAll = true;
+      }
+    });
+  }
+
+  handleScroll(): void {
+    window.onscroll = () => this.detectBottom();
+  }
+
+  detectBottom(): void {
+    const el = document.getElementById('area-content');
+    if (window.innerHeight >= Math.floor(el.clientHeight + el.getBoundingClientRect().top)) {
+      if (!this.loadedAll) {
+        setTimeout(() => {
+          this.getNextPost();
+        }, 400);
+      }
     }
   }
 

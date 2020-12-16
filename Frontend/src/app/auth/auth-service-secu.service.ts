@@ -84,7 +84,9 @@ export class AuthServiceSecu {
         sessionStorage.setItem('username', data.name);
         sessionStorage.setItem('role', result);
         sessionStorage.setItem('avatar', data.photoUrl);
-        this.router.navigateByUrl(this.urlReturn);
+        setTimeout(() => {
+          this.router.navigateByUrl(this.urlReturn);
+        }, 1000);
       }, error => {
         console.log(error);
         alert('ERROR! PLEASE TRY AGAIN!');

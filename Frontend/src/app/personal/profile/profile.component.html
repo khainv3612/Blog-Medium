@@ -20,10 +20,10 @@
       <h3 class="name mt-3">{{username}}</h3>
       <p>{{user.description}}</p>
       <div class="profile-stats">
-        <a href="#">
-          <strong>{{user.lstPost.length}}</strong>
-          Posts
-        </a>
+<!--        <a href="#">-->
+<!--          <strong>{{user.lstPost.length}}</strong>-->
+<!--          Posts-->
+<!--        </a>-->
         <a href="#">
           <strong>963</strong>
           Following
@@ -67,8 +67,8 @@
     </div>
   </div>
 
-  <div class="col-lg-6">
-    <div class="profile-middle-content mb-30" *ngFor="let post of user.lstPost" >
+  <div class="col-lg-6" id="area-content">
+    <div class="profile-middle-content mb-30" *ngFor="let post of user.lstPost">
       <div class="post-card">
         <div class="media">
           <img src="{{user.image}}" alt="User" class="mr-3 rounded-circle" width="50" height="50">

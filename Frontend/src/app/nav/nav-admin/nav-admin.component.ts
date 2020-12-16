@@ -26,5 +26,9 @@ export class NavAdminComponent implements OnInit {
     this.userService.redirectDetailPage(sessionStorage.getItem('username'));
   }
 
+  redirectEditProfilePage() {
+    this.userService.redirectEditProfilePage(sessionStorage.getItem('username'));
+  }
+
 
 }

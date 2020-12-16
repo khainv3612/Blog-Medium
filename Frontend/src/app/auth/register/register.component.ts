@@ -51,6 +51,7 @@ export class RegisterComponent implements OnInit {
       console.log('error');
       return;
     }
+    this.registerPayload = this.registerForm.value;
     this.authService.register(this.registerPayload).subscribe(data => {
       console.log('register succes');
       this.router.navigateByUrl('/register-success');
@@ -81,26 +82,10 @@ export class RegisterComponent implements OnInit {
   }
 
   validateForm() {
-    if (!this.registerForm.get('username').valid) {
-      this.isValidUsername = false;
-    } else {
-      this.isValidUsername = true;
-    }
-    if (!this.registerForm.get('email').valid) {
-      this.isValidEmail = false;
-    } else {
-      this.isValidEmail = true;
-    }
-    if (!this.registerForm.get('password').valid) {
-      this.isValidPass = false;
-    } else {
-      this.isValidPass = true;
-    }
-    if (!this.registerForm.get('confirmPassword').valid) {
-      this.isValidRepass = false;
-    } else {
-      this.isValidRepass = true;
-    }
+    this.isValidUsername = this.registerForm.get('username').valid;
+    this.isValidEmail = this.registerForm.get('email').valid;
+    this.isValidPass = this.registerForm.get('password').valid;
+    this.isValidRepass = this.registerForm.get('confirmPassword').valid;
     this.validateConfirmPass();
   }
 }

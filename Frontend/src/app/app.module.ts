@@ -50,6 +50,18 @@ import {ProfileComponent} from './personal/profile/profile.component';
 import {allIcons} from 'angular-feather/icons';
 import {FeatherModule} from 'angular-feather';
 import {LazyImageModule} from 'ng-lazy-image';
+import {ScrollToTopComponent} from './directive/scroll-to-top/scroll-to-top.component';
+import {EditProfileComponent} from './personal/edit-profile/edit-profile.component';
+
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {DateAdapter, MAT_DATE_FORMATS, MatNativeDateModule} from '@angular/material/core';
+import {APP_DATE_FORMATS, AppDateAdapter} from './service/format-datepicker';
+
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -112,6 +124,8 @@ const customNotifierOptions: NotifierOptions = {
     PreviewPostComponent,
     CommentComponent,
     ProfileComponent,
+    ScrollToTopComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -131,6 +145,7 @@ const customNotifierOptions: NotifierOptions = {
       {path: 'admin/:action', component: AddPostComponent, canActivate: [AuthGuard]},
       {path: 'mypost/:type-post', component: MyPostComponent, canActivate: [AuthGuard]},
       {path: 'profile', component: ProfileComponent},
+      {path: 'edit-profile', component: EditProfileComponent},
     ]),
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -152,8 +167,12 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule.withConfig(customNotifierOptions),
     FeatherModule.pick(allIcons),
     LazyImageModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: HttpClientInterceptor, multi: true},
+    {provide: DateAdapter, useClass: AppDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS},
     {
       provide: 'SocialAuthServiceConfig',
       useValue: {
