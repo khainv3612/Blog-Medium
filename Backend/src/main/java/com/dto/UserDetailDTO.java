@@ -9,7 +9,7 @@ import java.time.Instant;
 @Data
 public class UserDetailDTO {
     private Long id;
-    private String userName;
+    private String username;
 
     private String password;
     private String email;

@@ -2,11 +2,11 @@ package com.config;
 
 public class MyConstants {
 
-    public static final String MY_EMAIL = "blogdevcold@gmail.com";
+    public static final String MY_EMAIL = "";
 
     // Replace password!!
-    public static final String MY_PASSWORD = "Minari.36102";
+    public static final String MY_PASSWORD = "";
 
     // And receiver!
-    public static final String FRIEND_EMAIL = "devcolduet@gmail.com";
+    public static final String FRIEND_EMAIL = "";
 }

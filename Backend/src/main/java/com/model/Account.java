@@ -12,6 +12,12 @@ import java.util.Date;
 @Entity
 @Table(name = "ACCOUNT")
 @Data
+@NamedQueries({
+        @NamedQuery(name = "Account.getPassById"
+                , query = "select a.password from Account  a where a.id=:id"),
+        @NamedQuery(name = "Account.updatePassById",
+                query = "update Account a set a.password=:newPass where a.id=:id")
+})
 public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
