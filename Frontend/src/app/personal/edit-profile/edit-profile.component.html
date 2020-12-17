@@ -1,8 +1,9 @@
-<div class="container rounded bg-white  mb-5">
+<div class="container rounded bg-white  mb-5" xmlns="http://www.w3.org/1999/html">
+  <notifier-container style="padding-top: 0px"></notifier-container>
   <div class="row">
     <div class="col-md-3 border-right">
       <div class="avatar-wrapper">
-        <img class="profile-pic" src="{{user.image}}"/>
+        <img class="profile-pic image-cropper" src="{{user.image}}"/>
         <div class="upload-button">
           <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
         </div>
@@ -10,57 +11,114 @@
       </div>
     </div>
     <div class="col-md-5 border-right">
-      <div class="p-3 py-5">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h4 class="text-right">Profile Settings</h4>
-        </div>
-        <div class="row mt-2">
-          <div class="col-md-6"><label class="labels">Username</label><input type="text" class="form-control"
-                                                                             placeholder="first name"
-                                                                             value="{{username}}"></div>
-          <div class="col-md-6"><label class="labels">Birth (mm/dd/yyyy)</label>
-            <input type="date" class="form-control" [(ngModel)]="user.birthday"
-                   placeholder="dd/mm/yyyy">
-            <!--                        <mat-form-field appearance="fill">-->
-            <!--                          <mat-label>Choose a date</mat-label>-->
-            <!--                          <input matInput [matDatepicker]="picker" value="{{user.birthday|date}}">-->
-            <!--                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
-            <!--                          <mat-datepicker #picker></mat-datepicker>-->
-            <!--                        </mat-form-field>-->
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-right">Profile Settings</h4>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6"><label class="labels">Username</label><input type="text" class="form-control"
+                                                                               placeholder="first name"
+                                                                               [formControlName]="'username'">
+              <span class="error-message" *ngIf="isNeedCheck&&!isValidUsername">{{validateService.usernameErr}}</span>
+            </div>
 
+            <div class="col-md-6"><label class="labels">Birth (mm/dd/yyyy)</label>
+              <input type="date" class="form-control" [formControlName]="'birthday'"
+                     placeholder="dd/mm/yyyy">
+              <!--                        <mat-form-field appearance="fill">-->
+              <!--                          <mat-label>Choose a date</mat-label>-->
+              <!--                          <input matInput [matDatepicker]="picker" value="{{user.birthday|date}}">-->
+              <!--                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>-->
+              <!--                          <mat-datepicker #picker></mat-datepicker>-->
+              <!--                        </mat-form-field>-->
+            </div>
+            <span class="error-message"
+                  *ngIf="isNeedCheck&&!profileForm.get('birthday').valid">{{validateService.not_null_field}}</span>
+          </div>
 
+          <div class="row mt-3">
+            <div class="col-md-12"><label class="labels">PhoneNumber</label><input type="number" class="form-control"
+                                                                                   placeholder="enter phone number"
+                                                                                   [formControlName]="'phone'">
+              <span class="error-message"
+                    *ngIf="isNeedCheck&&!profileForm.get('phone').valid">{{validateService.phoneErr}}</span></div>
+
+            <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control"
+                                                                               placeholder="enter address"
+                                                                               [formControlName]="'address'">
+              <span class="error-message"
+                    *ngIf="isNeedCheck&&!profileForm.get('address').valid">{{validateService.not_null_field}}</span>
+            </div>
+
+            <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control"
+                                                                                placeholder="enter email id"
+                                                                                [formControlName]="'email'">
+              <span class="error-message" *ngIf="!isValidEmail">{{validateService.emailFormat}}</span>
+            </div>
+
+            <div class="col-md-12"><label class="labels">Describe</label><textarea rows="5" class="form-control"
+                                                                                   placeholder="enter email id"
+                                                                                   [formControlName]="'description'"></textarea>
+              <span class="error-message"
+                    *ngIf="isNeedCheck&&!profileForm.get('description').valid">{{validateService.not_null_field}}</span>
+            </div>
+          </div>
+          <div class="mt-5 text-center">
+            <button class="btn btn-primary profile-button" type="submit">Save Profile</button>
           </div>
         </div>
-        <div class="row mt-3">
-          <div class="col-md-12"><label class="labels">PhoneNumber</label><input type="text" class="form-control"
-                                                                                 placeholder="enter phone number"
-                                                                                 value="{{user.phone}}"></div>
-          <div class="col-md-12"><label class="labels">Address</label><input type="text" class="form-control"
-                                                                             placeholder="enter address"
-                                                                             value="{{user.address}}"></div>
-          <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control"
-                                                                              placeholder="enter email id"
-                                                                              value="{{user.email}}">
-          </div>
-        </div>
-        <div class="mt-5 text-center">
-          <button class="btn btn-primary profile-button" type="button">Save Profile</button>
-        </div>
-      </div>
+      </form>
     </div>
+
     <div class="col-md-4">
       <div class="p-3 py-5">
-        <div class="d-flex justify-content-between align-items-center experience"><span>Edit Experience</span><span
-          class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;Experience</span></div>
-        <br>
-        <div class="col-md-12"><label class="labels">Experience in Designing</label><input type="text"
-                                                                                           class="form-control"
-                                                                                           placeholder="experience"
-                                                                                           value=""></div>
-        <br>
-        <div class="col-md-12"><label class="labels">Additional Details</label><input type="text" class="form-control"
-                                                                                      placeholder="additional details"
-                                                                                      value=""></div>
+        <form [formGroup]="resetPassForm" (ngSubmit)="updatePassword()">
+          <div (click)="showHideUpdatePass()" class="d-flex justify-content-between align-items-center experience"><span
+            class="border px-3 p-1 add-experience"><i class="fa fa-plus"></i>&nbsp;&nbsp;Update password</span>
+          </div>
+          <br>
+          <div id="update-pass" style="display: none">
+            <div class="col-md-12 input_container">
+
+              <label class="labels">Current Password</label>
+              <input #pass type="password"
+                     class="form-control input"
+                     placeholder="Current Password"
+                     [formControlName]="'currentpass'">
+              <i class="material-icons cursor-pointer input_img"
+                 (click)="pass.type=pass.type=='password'?'text':'password'">&#xE417;</i>
+              <span class="error-message"
+                    *ngIf="isNeedCheckPass&&!resetPassForm.get('currentpass').valid">{{validateService.not_null_field}}</span>
+            </div>
+            <br>
+            <div class="col-md-12  input_container"><label class="labels">New Password</label><input type="password"
+                                                                                                     id="inputPassword"
+                                                                                                     class="form-control input"
+                                                                                                     #newpass
+                                                                                                     placeholder="New Password"
+                                                                                                     [formControlName]="'newpass'">
+              <i class="material-icons cursor-pointer input_img"
+                 (click)="newpass.type=newpass.type=='password'?'text':'password'">&#xE417;</i>
+              <span class="error-message" *ngIf="!isValidPass">{{validateService.passWordFormat}}</span></div>
+
+            <br>
+            <div class="col-md-12 input_container"><label class="labels">Password Confirm</label><input type="password"
+                                                                                                        class="form-control input"
+                                                                                                        id="inputConfirmPassword"
+                                                                                                        #repass
+                                                                                                        placeholder="Password Confirm"
+                                                                                                        [formControlName]="'confirmpass'">
+              <i class="material-icons cursor-pointer input_img"
+                 (click)="repass.type=repass.type=='password'?'text':'password'">&#xE417;</i>
+              <span class="error-message" *ngIf="!isMatchPass">{{validateService.passNotMatch}}</span>
+              <span class="error-message" *ngIf="!isValidRepass">{{validateService.repassErr}}</span>
+            </div>
+            <div class="mt-5 text-center">
+              <button class="btn btn-primary profile-button" type="submit">Update Password</button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

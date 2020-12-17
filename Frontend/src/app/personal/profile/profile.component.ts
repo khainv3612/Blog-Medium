@@ -24,10 +24,10 @@ export class ProfileComponent implements OnInit {
   isFirstLoad = true;
 
   constructor(private postService: PostService, private userService: UserDetailService, private routerActive: ActivatedRoute
-    , private router: Router, private authService: AuthServiceSecu) {
-    this.router.getCurrentNavigation().extras.state;
-    this.username = history.state[0];
-    this.checkIsLoginToShowData();
+    , private router: Router, private authService: AuthServiceSecu, private routeractive: ActivatedRoute) {
+    this.routeractive.params.subscribe(params => {
+      this.username = params['username'];
+    });
     this.request = {
       username: this.username,
       page: this.page,
@@ -51,15 +51,6 @@ export class ProfileComponent implements OnInit {
     return forkJoin([details, postOwner]);
   }
 
-  checkIsLoginToShowData() {
-    if (this.authService.isAuthenticated()) {
-      if (undefined == this.username) {
-        this.username = sessionStorage.getItem('username');
-      }
-    } else {
-      this.router.navigateByUrl('/home');
-    }
-  }
 
   showHideCommentArea(id: number) {
     const x = document.getElementById('comment-' + id);

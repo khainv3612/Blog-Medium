@@ -5,7 +5,8 @@ import {Injectable} from '@angular/core';
 })
 
 export class ValidationService {
-  public usernameErr: string = 'Username length is between 5 and 15 character';
+  public usernameErr: string = 'Username is from 5 to 15 characters';
+  public phoneErr: string = 'Phone is from 10 to 12 numbers';
   public emailFormat: string = 'Email is invalid format';
   public passWordFormat: string = 'Password between 8 to 15 characters, at least one lowercase letter, one uppercase letter, one numeric digit, and one special character';
   public passNotMatch: string = 'Repassword is not matched';
@@ -16,6 +17,7 @@ export class ValidationService {
   public delete_unsuccess: string = 'Something Error!';
   public publish_success: string = 'Publish post success!';
   public publish_unsuccess: string = 'Something Error!';
+  public not_null_field: string = 'Field is not be empty!';
 
   static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
     const config = {

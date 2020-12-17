@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
       }
     }, error => {
       console.log('Login failed');
-      this.showNotification('error', 'Something went wrong, please try again!');
+      this.showNotification('error', 'Username or password is incorrect');
     });
   }
 

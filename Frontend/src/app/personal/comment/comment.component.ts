@@ -102,7 +102,6 @@ export class CommentComponent implements OnInit {
   getComment(page, size) {
     this.commentService.getComment(page, size, this.idPost).subscribe(result => {
       this.lstCmt = result;
-      console.log(result);
     }, error => {
       console.log(error);
     });

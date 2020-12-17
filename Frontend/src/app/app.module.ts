@@ -144,7 +144,7 @@ const customNotifierOptions: NotifierOptions = {
       {path: 'home', component: HomeComponent},
       {path: 'admin/:action', component: AddPostComponent, canActivate: [AuthGuard]},
       {path: 'mypost/:type-post', component: MyPostComponent, canActivate: [AuthGuard]},
-      {path: 'profile', component: ProfileComponent},
+      {path: 'profile/:username', component: ProfileComponent},
       {path: 'edit-profile', component: EditProfileComponent},
     ]),
     HttpClientModule,

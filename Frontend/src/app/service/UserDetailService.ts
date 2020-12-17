@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {AccountDetails} from '../model/AccountDetails';
 import {PostService} from './PostService.service';
 import {Router} from '@angular/router';
+import {ResetPass} from '../model/ResetPass';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,19 @@ export class UserDetailService {
     return this.httpClient.post<AccountDetails>(this.url + 'get-user-detail', username);
   }
 
-  redirectDetailPage(username: string) {
-    this.router.navigateByUrl('/profile', {state: [username]});
-  }
-
   redirectEditProfilePage(username: string) {
     this.router.navigateByUrl('/edit-profile', {state: [username]});
+  }
+
+  redirectDetailPage(username: string) {
+    this.router.navigateByUrl('/profile/' + username);
+  }
+
+  updateProfile(user: AccountDetails): Observable<string> {
+    return this.httpClient.post<string>(this.url + 'update-profile', user, {responseType: 'text'});
+  }
+
+  updatePass(resetPass: ResetPass): Observable<string> {
+    return this.httpClient.post<string>(this.url + 'update-pass', resetPass, {responseType: 'text'});
   }
 }

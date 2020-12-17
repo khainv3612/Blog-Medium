@@ -70,6 +70,7 @@ export class AuthServiceSecu {
     sessionStorage.removeItem('role');
     sessionStorage.removeItem('avatar');
     this.authService.signOut();
+    this.router.navigateByUrl('/');
   }
 
   loginGoogle() {
