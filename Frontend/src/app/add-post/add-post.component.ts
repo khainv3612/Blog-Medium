@@ -127,7 +127,7 @@ export class AddPostComponent implements OnInit {
       return;
     }
     this.isSaving = true;
-    this.postPayload.username = this.localStoraqeService.retrieve('username');
+    this.postPayload.username = sessionStorage.getItem('username');
     if (this.selectedImage != null) {
       await this.uploadFileImage();
     }

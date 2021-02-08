@@ -29,10 +29,9 @@ export class UserDetailService {
   }
 
   updateProfile(user: AccountDetails): Observable<string> {
-    return this.httpClient.post<string>(this.url + 'update-profile', user, {responseType: 'text'});
+    return this.httpClient.post<string>(this.url + 'update-profile', user, {responseType: 'text' as 'json'});
   }
-
   updatePass(resetPass: ResetPass): Observable<string> {
-    return this.httpClient.post<string>(this.url + 'update-pass', resetPass, {responseType: 'text'});
+    return this.httpClient.post<string>(this.url + 'update-pass', resetPass, {responseType: 'text' as 'json'});
   }
 }
